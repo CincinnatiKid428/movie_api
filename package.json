@@ -1,16 +1,17 @@
 {
   "name": "movie_api",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "description": "This will be an API for a movie application",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Philip Weaver",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "body-parser": "^1.20.3",
+    "express": "^4.21.0"
   }
 }
