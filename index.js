@@ -7,15 +7,17 @@ const morgan = require('morgan');
 
 
 let topMovies = [];
+let topMoviesJson = {};
 fs.readFile('./top-movies.json', (err, data) => {
     if(err){
         throw err;
     }
+    console.log('Read input file:');
     console.log(JSON.parse(data));
+
+    topMoviesJson = data;
     topMovies = JSON.parse(data);
 });
-
-
 
 // Logging stream to log.txt with append flag set
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
@@ -30,8 +32,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/movies', (req, res) => {
-    console.log('Top movies response : '+JSON.stringify(topMovies));
-    res.send(JSON.stringify(topMovies));
+    console.log('Top movies json response : '+JSON.stringify(topMoviesJson));
+    console.log('Top movies parsed json response :');
+    console.log(topMovies);
+    //res.send(JSON.stringify(topMovies));
+    res.json(topMoviesJson);
 });
 
 app.get('/documentation', (req, res) => {
