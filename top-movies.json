@@ -1,0 +1,34 @@
+{
+    "movies" : [
+        {
+            "title" : "Stand by Me"
+        },
+        {
+            "title" : "The Shawshank Redemption"
+        },
+        {
+            "title" : "Indiana Jones: Raiders of the Lost Ark"
+        },
+        {
+            "title" : "Dune"
+        },
+        {
+            "title" : "Fight Club"
+        },
+        {
+            "title" : "Donnie Darko"
+        },
+        {
+            "title" : "Ghostbusters"
+        },
+        {
+            "title" : "Halloween"
+        },
+        {
+            "title" : "The Matrix"
+        },
+        {
+            "title" : "Primer"
+        }
+    ]
+}
