@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="src/css/styles.css">
     <title>API Documentation</title>
 </head>
 <body>
@@ -16,5 +18,196 @@
         personal information, and create a list of their favorite movies.
 
     </p>
+
+    <p>
+        <h3>API Endpoints &amp; Descriptions</h3>
+        <!--ul>
+            <li><b>GET /movies</b> will return a list of ALL movies</li>
+            <li><b>GET /movies/[title]</b> will return data (description, genre, director, image URL, whether it is featured or not) about a single movie by title</li>
+            <li><b>GET /genre/[name]</b> will return data about a genre (description) by name/title (e.g., "Thriller")</li>
+            <li><b>GET /director/[name]</b> will return data about a director (bio, birth year, death year) by name</li>
+            <li><b>POST /users/[username]/[password]</b> will register a new user with username/password as user's chosen credentials</li>
+            <li><b>PUT /users/[username]/[password]/[newUserName]</b> will updated an exisiting user's username</li>
+            <li><b>POST /users/favorites/[username]/[password]/[title]</b> will add a movie by title to a favorites list and return text response</li>
+            <li><b>DELETE /users/favorites/[username]/[password]/[title]</b> will remove a movie by title from a favorites list and return text response</li>
+            <li><b>DELETE /users/[username]/[password]</b> will deregister a user</li>
+        </ul-->
+    </p>
+
+    <div>
+        <table class="api-table">
+            <tr>
+                <td class="description-cell">Description</td>
+                <td class="url-cell">URL</td>
+                <td class="http-method-cell">HTTP Method</td>
+                <td class="req-params-cell">Query Parameters</td>
+                <td class="req-body-cell">Request Body Format</td>
+                <td class="res-body-cell">Response Body Format</td>
+            </tr>
+
+            <tr>
+                <td class="description-cell">Returns a list of ALL movies</td>
+                <td class="url-cell">/movies</td>
+                <td class="http-method-cell">GET</td>
+                <td class="req-params-cell">none</td>
+                <td class="req-body-cell">none</td>
+                <td class="res-body-cell">A JSON format response containing an array of movies like:
+                    <p>
+                    {<br>
+                        "movies" : [<br>
+                            <blockquote>{"title" : "Stand by Me"},<br>
+                            {"title" : "The Shawshank Redemption"},<br>
+                            {"title" : "Indiana Jones: Raiders of the Lost Ark"},<br>
+                            {"title" : "Dune"},<br>
+                            {"title" : "Fight Club"},<br>
+                            {"title" : "Donnie Darko"},<br>
+                            {"title" : "Ghostbusters"},<br>
+                            {"title" : "Halloween"},<br>
+                            {"title" : "The Matrix"},<br>
+                            {"title" : "Primer"}<br>
+                        ]<br></blockquote>
+                    }
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="description-cell">Returns data (description, genre, director, image URL, whether it is featured or not) about a single movie by title</td>
+                <td class="url-cell">/movies/[title]</td>
+                <td class="http-method-cell">GET</td>
+                <td class="req-params-cell">
+                    <ul>
+                        <li><b>title</b> is the title of the movie the user is looking for information about</li>
+                    </ul>
+                </td>
+                <td class="req-body-cell">none</td>
+                <td class="res-body-cell">A JSON format response containing information about a single movie like:
+                    <p>
+                        {<br>
+                            "movie" : [
+                        <blockquote>{"title" : "Stand by Me"},<br>
+                                {"year" : "1986"},<br>
+                                {"genre" : "Adventure, Comedy, Drama"},<br>
+                                {"director" : "Rob Reiner"},<br>
+                                {"imgURL" : "https://someplace.com/stand-by-me.jpg"},<br>
+                                {"featured" : "true"},<br>
+                            ]</blockquote><br>
+                        }
+                        </p>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="description-cell">Returns data about a genre (description) by name/title (e.g., "Thriller")</td>
+                <td class="url-cell">/genre/[name]</td>
+                <td class="http-method-cell">GET</td>
+                <td class="req-params-cell">
+                    <ul>
+                        <li><b>name</b> is the name of the genre the user is looking for information about</li>
+                    </ul>
+                </td>
+                <td class="req-body-cell">none</td>
+                <td class="res-body-cell">A text message description of the genre in the requst parameters</td>
+            </tr>
+
+            <tr>
+                <td class="description-cell">Returns data about a director (bio, birth year, death year) by name</td>
+                <td class="url-cell">/director/[name]</td>
+                <td class="http-method-cell">GET</td>
+                <td class="req-params-cell">
+                    <ul>
+                        <li><b>name</b> is the name of the director to look up information</li>
+                    </ul>
+                </td>
+                <td class="req-body-cell">none</td>
+                <td class="res-body-cell">A JSON format object holding data about the director like:
+                    <p>
+                        {<br>
+                            "director" : [<br>
+                                <blockquote>{"name" : "Rob Reiner"},<br>
+                                {"birthYear" : "1947"},<br>
+                                {"deathYear" : ""},<br>
+                                {"bio" : "A short biography."}<br>
+                            ]</blockquote><br>
+                        }
+                        </p>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="description-cell">Register a new user with username/password as user's chosen credentials</td>
+                <td class="url-cell">/users/[username]/[password]</td>
+                <td class="http-method-cell">POST</td>
+                <td class="req-params-cell">
+                    <ul>
+                        <li><b>username</b> is the user's desired login</li>
+                        <li><b>password</b> is the user's desired password</li>
+                    </ul>
+                </td>
+                <td class="req-body-cell">none</td>
+                <td class="res-body-cell">A text message if the user account was created or not</td>
+            </tr>
+
+            <tr>
+                <td class="description-cell">Updates an exisiting user's username given valid credentials</td>
+                <td class="url-cell">/users/newUsername/[username]/[password]/[newUsername]</td>
+                <td class="http-method-cell">PUT</td>
+                <td class="req-params-cell">
+                    <ul>
+                        <li><b>username</b> is the user's login</li>
+                        <li><b>password</b> is the user's password</li>
+                        <li><b>newUsername</b> is the user's desired login</li>
+                    </ul>
+                </td>
+                <td class="req-body-cell">none</td>
+                <td class="res-body-cell">A text message notifying of success/failure with updating username</td>
+            </tr>
+
+            <tr>
+                <td class="description-cell">Adds a movie by title to a favorites list and return text response</td>
+                <td class="url-cell">/users/favorites/[username]/[password]/[title]</td>
+                <td class="http-method-cell">POST</td>
+                <td class="req-params-cell">
+                    <ul>
+                        <li><b>username</b> is the user's login</li>
+                        <li><b>password</b> is the user's password</li>
+                        <li><b>title</b> is the name of the movie to be added to the user's list</li>
+                    </ul>
+                </td>
+                <td class="req-body-cell">none</td>
+                <td class="res-body-cell">A text message indicating if adding the movie to list was a success/failure</td>
+            </tr>
+
+            <tr>
+                <td class="description-cell">Removes a movie by title from a favorites list and return text response</td>
+                <td class="url-cell">/users/favorites/[username]/[password]/[title]</td>
+                <td class="http-method-cell">DELETE</td>
+                <td class="req-params-cell">
+                    <ul>
+                        <li><b>username</b> is the user's login</li>
+                        <li><b>password</b> is the user's password</li>
+                        <li><b>title</b> is the name of the movie to be removed the user's list</li>
+                    </ul>
+                </td>
+                <td class="req-body-cell">none</td>
+                <td class="res-body-cell">A text response indicating success/failure of removing the favorite movie from list</td>
+            </tr>
+
+            <tr>
+                <td class="description-cell">Deregisters a user given valid credentials</td>
+                <td class="url-cell">/users/[username]/[password]</td>
+                <td class="http-method-cell">DELETE</td>
+                <td class="req-params-cell">
+                    <ul>
+                        <li><b>username</b> is the user's login</li>
+                        <li><b>password</b> is the user's password</li>
+                    </ul>
+                </td>
+                <td class="req-body-cell">none</td>
+                <td class="res-body-cell">A text response confirming success/failure of deregister operation</td>
+            </tr>
+        </table>
+    </div>
+
 </body>
 </html>
