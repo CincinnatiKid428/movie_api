@@ -37,20 +37,20 @@
     <div>
         <table class="api-table">
             <tr>
-                <td class="description-cell">Description</td>
-                <td class="url-cell">URL</td>
-                <td class="http-method-cell">HTTP Method</td>
-                <td class="req-params-cell">Query Parameters</td>
-                <td class="req-body-cell">Request Body Format</td>
-                <td class="res-body-cell">Response Body Format</td>
+                <td class="heading-cell description-cell center-cell">Description</td>
+                <td class="heading-cell url-cell center-cell">URL</td>
+                <td class="heading-cell http-method-cell center-cell">HTTP Method</td>
+                <td class="heading-cell req-params-cell center-cell">Query Parameters</td>
+                <td class="heading-cell req-body-cell center-cell">Request Body Format</td>
+                <td class="heading-cell res-body-cell center-cell">Response Body Format</td>
             </tr>
 
             <tr>
                 <td class="description-cell">Returns a list of ALL movies</td>
-                <td class="url-cell">/movies</td>
-                <td class="http-method-cell">GET</td>
-                <td class="req-params-cell">none</td>
-                <td class="req-body-cell">none</td>
+                <td class="url-cell center-cell">/movies</td>
+                <td class="http-method-cell center-cell">GET</td>
+                <td class="req-params-cell center-cell">none</td>
+                <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A JSON format response containing an array of movies like:
                     <p>
                     {<br>
@@ -65,7 +65,7 @@
                             {"title" : "Halloween"},<br>
                             {"title" : "The Matrix"},<br>
                             {"title" : "Primer"}<br>
-                        ]<br></blockquote>
+                        ]</blockquote>
                     }
                     </p>
                 </td>
@@ -73,14 +73,10 @@
 
             <tr>
                 <td class="description-cell">Returns data (description, genre, director, image URL, whether it is featured or not) about a single movie by title</td>
-                <td class="url-cell">/movies/[title]</td>
-                <td class="http-method-cell">GET</td>
-                <td class="req-params-cell">
-                    <ul>
-                        <li><b>title</b> is the title of the movie the user is looking for information about</li>
-                    </ul>
-                </td>
-                <td class="req-body-cell">none</td>
+                <td class="url-cell center-cell">/movies/[title]</td>
+                <td class="http-method-cell center-cell">GET</td>
+                <td class="req-params-cell"><b>title</b> is the title of the movie the user is looking for information about</td>
+                <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A JSON format response containing information about a single movie like:
                     <p>
                         {<br>
@@ -91,7 +87,7 @@
                                 {"director" : "Rob Reiner"},<br>
                                 {"imgURL" : "https://someplace.com/stand-by-me.jpg"},<br>
                                 {"featured" : "true"},<br>
-                            ]</blockquote><br>
+                            ]</blockquote>
                         }
                         </p>
                 </td>
@@ -99,36 +95,28 @@
 
             <tr>
                 <td class="description-cell">Returns data about a genre (description) by name/title (e.g., "Thriller")</td>
-                <td class="url-cell">/genre/[name]</td>
-                <td class="http-method-cell">GET</td>
-                <td class="req-params-cell">
-                    <ul>
-                        <li><b>name</b> is the name of the genre the user is looking for information about</li>
-                    </ul>
-                </td>
-                <td class="req-body-cell">none</td>
+                <td class="url-cell center-cell">/genre/[name]</td>
+                <td class="http-method-cell center-cell">GET</td>
+                <td class="req-params-cell center-cell"><b>name</b> is the name of the genre the user is looking for information about</td>
+                <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A text message description of the genre in the requst parameters</td>
             </tr>
 
             <tr>
                 <td class="description-cell">Returns data about a director (bio, birth year, death year) by name</td>
-                <td class="url-cell">/director/[name]</td>
-                <td class="http-method-cell">GET</td>
-                <td class="req-params-cell">
-                    <ul>
-                        <li><b>name</b> is the name of the director to look up information</li>
-                    </ul>
-                </td>
-                <td class="req-body-cell">none</td>
+                <td class="url-cell center-cell">/director/[name]</td>
+                <td class="http-method-cell center-cell">GET</td>
+                <td class="req-params-cell"><b>name</b> is the name of the director to look up information</td>
+                <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A JSON format object holding data about the director like:
                     <p>
                         {<br>
-                            "director" : [<br>
+                            "director" : [
                                 <blockquote>{"name" : "Rob Reiner"},<br>
                                 {"birthYear" : "1947"},<br>
                                 {"deathYear" : ""},<br>
                                 {"bio" : "A short biography."}<br>
-                            ]</blockquote><br>
+                            ]</blockquote>
                         }
                         </p>
                 </td>
@@ -136,74 +124,70 @@
 
             <tr>
                 <td class="description-cell">Register a new user with username/password as user's chosen credentials</td>
-                <td class="url-cell">/users/[username]/[password]</td>
-                <td class="http-method-cell">POST</td>
-                <td class="req-params-cell">
-                    <ul>
-                        <li><b>username</b> is the user's desired login</li>
-                        <li><b>password</b> is the user's desired password</li>
-                    </ul>
+                <td class="url-cell center-cell">/users</td>
+                <td class="http-method-cell center-cell">POST</td>
+                <td class="req-params-cell center-cell">none</td>
+                <td class="req-body-cell">A JSON object holding the desired credentials to register a new account like:
+                    <p>{<br>
+                        "credentials" :
+                        <blockquote>{"username" : "Saffron" , "password" : "meow1234!"}</blockquote>
+                    }
+                    </p>
                 </td>
-                <td class="req-body-cell">none</td>
                 <td class="res-body-cell">A text message if the user account was created or not</td>
             </tr>
 
             <tr>
-                <td class="description-cell">Updates an exisiting user's username given valid credentials</td>
-                <td class="url-cell">/users/newUsername/[username]/[password]/[newUsername]</td>
-                <td class="http-method-cell">PUT</td>
-                <td class="req-params-cell">
-                    <ul>
-                        <li><b>username</b> is the user's login</li>
-                        <li><b>password</b> is the user's password</li>
-                        <li><b>newUsername</b> is the user's desired login</li>
-                    </ul>
+                <td class="description-cell">Updates an exisiting user's account username or password</td>
+                <td class="url-cell center-cell">/users</td>
+                <td class="http-method-cell center-cell">PUT</td>
+                <td class="req-params-cell center-cell">none</td>
+                <td class="req-body-cell">A JSON object with the new username or password to be updated. Only one may be updated per request, the other value will default to "0".
+                    <p>{<br>
+                        "credentials" :
+                        <blockquote>{"username" : "Zoey428" , "password" : "0"}</blockquote>
+                    }
+                    </p>
+                    <p>OR</p>
+                    <p>{<br>
+                        "credentials" :
+                        <blockquote>{"username" : "0" , "password" : "CatNap789!"}</blockquote>
+                    }
+                    </p>
                 </td>
-                <td class="req-body-cell">none</td>
-                <td class="res-body-cell">A text message notifying of success/failure with updating username</td>
+                <td class="res-body-cell">A text message notifying of success/failure with updating username/password</td>
             </tr>
 
             <tr>
                 <td class="description-cell">Adds a movie by title to a favorites list and return text response</td>
-                <td class="url-cell">/users/favorites/[username]/[password]/[title]</td>
-                <td class="http-method-cell">POST</td>
-                <td class="req-params-cell">
-                    <ul>
-                        <li><b>username</b> is the user's login</li>
-                        <li><b>password</b> is the user's password</li>
-                        <li><b>title</b> is the name of the movie to be added to the user's list</li>
-                    </ul>
-                </td>
-                <td class="req-body-cell">none</td>
+                <td class="url-cell center-cell">/movies/favorites/[title]</td>
+                <td class="http-method-cell center-cell">POST</td>
+                <td class="req-params-cell"><b>title</b> is the name of the movie to be added to the user's list</td>
+                <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A text message indicating if adding the movie to list was a success/failure</td>
             </tr>
 
             <tr>
                 <td class="description-cell">Removes a movie by title from a favorites list and return text response</td>
-                <td class="url-cell">/users/favorites/[username]/[password]/[title]</td>
-                <td class="http-method-cell">DELETE</td>
-                <td class="req-params-cell">
-                    <ul>
-                        <li><b>username</b> is the user's login</li>
-                        <li><b>password</b> is the user's password</li>
-                        <li><b>title</b> is the name of the movie to be removed the user's list</li>
-                    </ul>
-                </td>
-                <td class="req-body-cell">none</td>
+                <td class="url-cell center-cell">/movies/favorites/[title]</td>
+                <td class="http-method-cell center-cell">DELETE</td>
+                <td class="req-params-cell"><b>title</b> is the name of the movie to be removed the user's list</td>
+                <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A text response indicating success/failure of removing the favorite movie from list</td>
             </tr>
 
             <tr>
                 <td class="description-cell">Deregisters a user given valid credentials</td>
-                <td class="url-cell">/users/[username]/[password]</td>
-                <td class="http-method-cell">DELETE</td>
-                <td class="req-params-cell">
-                    <ul>
-                        <li><b>username</b> is the user's login</li>
-                        <li><b>password</b> is the user's password</li>
-                    </ul>
+                <td class="url-cell center-cell">/users</td>
+                <td class="http-method-cell center-cell">DELETE</td>
+                <td class="req-params-cell center-cell">none</td>
+                <td class="req-body-cell">
+                    <p>{<br>
+                        "credentials" :
+                        <blockquote>{"username" : "Saffron" , "password" : "meow1234!"}</blockquote>
+                    }
+                    </p>
                 </td>
-                <td class="req-body-cell">none</td>
                 <td class="res-body-cell">A text response confirming success/failure of deregister operation</td>
             </tr>
         </table>

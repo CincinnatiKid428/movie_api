@@ -1,6 +1,6 @@
 /*  -------------Variable Definitions--------------  */
 :root {
-    --debug-border: 1px solid blue; /* Change pixel value to see borders for debugging */
+    --debug-border: 1px solid black; /* Change pixel value to see borders for debugging */
 }
   
 * {
@@ -35,7 +35,7 @@ body {
 
 .http-method-cell {
     border: var(--debug-border);
-    width: 10%;
+    width: 8%;
     padding: 2px;
 }
 
@@ -55,4 +55,13 @@ body {
     border: var(--debug-border);
     width: 20%;
     padding: 2px;
+}
+
+.center-cell {
+    text-align: center;
+}
+
+.heading-cell {
+    font-weight:bold;
+    background-color: #d3d3d3;
 }
