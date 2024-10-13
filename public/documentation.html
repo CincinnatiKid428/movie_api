@@ -138,7 +138,7 @@
             </tr>
 
             <tr>
-                <td class="description-cell">Updates an exisiting user's account username or password</td>
+                <td class="description-cell">Updates an exisiting user's account username or password. Business logic will determine which field the request is attempting to update.</td>
                 <td class="url-cell center-cell">/users</td>
                 <td class="http-method-cell center-cell">PUT</td>
                 <td class="req-params-cell center-cell">none</td>
@@ -163,7 +163,13 @@
                 <td class="url-cell center-cell">/movies/favorites/[title]</td>
                 <td class="http-method-cell center-cell">POST</td>
                 <td class="req-params-cell"><b>title</b> is the name of the movie to be added to the user's list</td>
-                <td class="req-body-cell center-cell">none</td>
+                <td class="req-body-cell">A JSON format object holding user credentials like: 
+                    <p>{<br>
+                        "credentials" :
+                        <blockquote>{"username" : "Saffron" , "password" : "meow1234!"}</blockquote>
+                    }
+                    </p>
+                </td>
                 <td class="res-body-cell">A text message indicating if adding the movie to list was a success/failure</td>
             </tr>
 
@@ -172,7 +178,12 @@
                 <td class="url-cell center-cell">/movies/favorites/[title]</td>
                 <td class="http-method-cell center-cell">DELETE</td>
                 <td class="req-params-cell"><b>title</b> is the name of the movie to be removed the user's list</td>
-                <td class="req-body-cell center-cell">none</td>
+                <td class="req-body-cell">A JSON format object holding user credentials like: 
+                    <p>{<br>
+                        "credentials" :
+                        <blockquote>{"username" : "Saffron" , "password" : "meow1234!"}</blockquote>
+                    }
+                    </p></td>
                 <td class="res-body-cell">A text response indicating success/failure of removing the favorite movie from list</td>
             </tr>
 
