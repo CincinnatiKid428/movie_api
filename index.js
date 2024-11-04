@@ -4,21 +4,29 @@ const app = express();
 const fs = require('fs'); 
 const path = require('path');
 const morgan = require('morgan');
+
 const bodyParser = require('body-parser');
 
-// Load movies object from input file movies.json -- data found in this file taken from https://www.omdbapi.com/
-const movies = require('./movies.json');
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+const Movies = Models.Movie;
+const Users = Models.User;
 
-console.log('* * * Loaded movies from file:');
-console.log(movies);
+// DB connection to MongoDB
+mongoose.connect('mongodb://localhost:27017/myFlix', {});
+
+// Express middleware:
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public')); // to use public folder for serving static html files
 
 // Logging stream to log.txt with append flag set
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
-
-// Middleware added below:
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
 app.use(morgan('common', {stream: accessLogStream}));
-app.use(express.static('public')); // to use public folder for serving static html files
+
 app.use(bodyParser.json()); // parse request bodies into JSON format
+
+
+
 
 // Requests & handling -----------------------------------------------------
 app.get('/', (req, res) => {
@@ -31,115 +39,246 @@ app.get('/documentation', (req, res) => {
 });
 
 // Get a list of all movies (titles) ---------------------------------------
-app.get('/movies', (req, res) => {
-
-    if(!movies) {
-        res.status(400).send('Failed GET : Unable to retrieve movies list.');
-    } else {
-        let responseMovies = {"movies" : []};
-        let movieItem = {};
-
-        //Build the list of favorite movies using only their titles
-        movies.movies.forEach((movieItem) => {
-            responseMovies.movies.push( {"title" : movieItem.title} );
+app.get('/movies', async (req, res) => {
+    console.log("Request for list of all movies...");
+    await Movies.find()
+        .then((responseMovies) => {
+            if(!responseMovies){
+                return res.status(404).send('Failed GET - Could not retrieve movies: '+responseMovies);
+            } else {
+                let listOfAllMovies = {"movies": []};
+                responseMovies.forEach((movieItem) => {
+                    console.log("Trying to add movie title to list : "+movieItem.Title);
+                    listOfAllMovies.movies.push(movieItem.Title); //Push movie titles onto array of movies
+                });
+                return res.status(200).json(listOfAllMovies);
+            }
+        }).catch((err)=> {
+            console.error(err);
+            return res.status(500).send('Failed GET - Server error retreiving movie list: '+err);
         });
 
-        res.status(200).json(responseMovies);
-    }
 });
 
 // Get information about a movie by title ---------------------------------------
-app.get('/movies/:title', (req, res) => {
-    let findTitle = req.params.title;
-    console.log('GET : Searching for info on movie: '+findTitle);
+app.get('/movies/:Title', async (req, res) => {
+    console.log('GET : Searching for info on movie: '+req.params.Title);
+    await Movies.findOne({Title: req.params.Title})
+        .then((movieFound) => {
+            
+            // API response does not include embedded documents for Genre/Director so 
+            //  a custom JSON response is built here omitting extra data.
+            let trimmedJsonString = '{';
 
-    if(!findTitle){
-        res.status(400).send('Failed GET : Title invalid : '+req.params.title);
-    } else {
-        let responseMovie = {};
-        let movieItem = {};
-        let foundMovie = false;
+            trimmedJsonString += '"Title": "'+movieFound.Title+'",';
+            trimmedJsonString += '"ReleaseYear": "'+movieFound.ReleaseYear+'",';
+            trimmedJsonString += '"Rating": "'+movieFound.Rating+'",';
+            trimmedJsonString += '"Description": "'+movieFound.Description+'",';
+            trimmedJsonString += '"Director": "'+movieFound.Director.Name+'",';
+            trimmedJsonString += '"Genre": "'+movieFound.Genre.Name+'",';
 
-        // Search for movie in list and prepare response if found
-        for(movieItem of movies.movies) {
+            // Rebuild the Actors array with proper JSON syntax
+            let actorsArray = '[';
+            let firstIndex = true;
+            movieFound.Actors.forEach((actor) => {
+                if(firstIndex) { 
+                    actorsArray += '"'+actor+'"';
+                    firstIndex = false;
+                } else {
+                    actorsArray += ',"'+actor+'"';
+                }
+            });
+            actorsArray += ']';
 
-            if(foundMovie) {
-                break;
-            } else if(findTitle === movieItem.title) {
-                foundMovie = true;
-                responseMovie = {"movie" : {}};
-                responseMovie.movie = movieItem;
-                console.log('Successful GET : Returning movie info: ');
-                console.log(responseMovie);
-                res.status(200).json(responseMovie);
-            }
-        };
+            //console.log("actorArray is : "+actorsArray);
 
-        // Can't find the movie in the list => responseMovie is still an empty object
-        if( !foundMovie ){
-            res.status(400).send('Failed GET : Could not find movie ['+req.params.title+'] in list.');
-        }
-    }
+            trimmedJsonString += '"Actors": '+actorsArray+',';
+            trimmedJsonString += '"ImageURL": "'+movieFound.ImageURL+'",';
+            trimmedJsonString += '"Featured": "'+movieFound.Featured+'"}';
+
+            //console.log("Trimmed JSON string is:");
+            //console.log(trimmedJsonString);
+
+            console.log("Parsing into JSON object...");
+            var parsedJson = JSON.parse(trimmedJsonString);
+            console.log(parsedJson);
+
+            res.status(200).json(parsedJson);
+        }).catch((err) => {
+            console.error(err);
+            res.status(500).send("Failed GET - Error looking for movie details about :"+req.params.Title+" with error : "+err);
+        });
 });
 
 // Get information about a genre by name ---------------------------------------
-app.get('/genre/:name', (req, res) => {
-    let responseMessage = 'Successful GET : This will return information about the movie genre '+req.params.name;
-    console.log(responseMessage);
-    res.send(responseMessage);
+app.get('/genre/:Name', async (req, res) => {
+    console.log('Looking for information about the movie genre '+req.params.Name);
+    await Movies.findOne({"Genre.Name" : req.params.Name})
+        .then((genreFoundInMovie) => {
+            res.status(200).json(genreFoundInMovie.Genre);
+        }).catch((err) => {
+            console.error(err);
+            res.status(500).send("Failed GET : Could not get info about genre "+req.params.Name+" with error : "+err);
+        });
 });
 
 // Get information about a director by name -------------------------------------
-app.get('/director/:name', (req, res) => {
-    let responseMessage = 'Successful GET : This will return information about director '+req.params.name;
-    console.log(responseMessage);
-    res.send(responseMessage);
+app.get('/director/:Name', async (req, res) => {
+    console.log('Looking for information about director '+req.params.Name);
+    await Movies.findOne({"Director.Name" : req.params.Name})
+        .then((directorFoundInMovie) => {
+            res.status(200).json(directorFoundInMovie.Director);
+        }).catch((err) => {
+            console.error(err);
+            res.status(500).send("Failed GET : Could not get info about director "+req.params.Name+" with error : "+err);
+        });
 });
 
 // Register a new user account --------------------------------------------------
-app.post('/users', (req, res) => {
-    let responseMessage = 'Successful POST : This would try to create a unique user account with username/password from req.body';
 
-    //req.body will contain username and password, bus logic here 
+/* Request body JSON should use this format:
+    {
+        Username: String,
+        Password: String,
+        Email: String,
+        Birthdate: Date
+    }
+}*/
+app.post('/users', async (req, res) => {
+    console.log('Trying to register a user: ');
+    console.log(JSON.stringify(req.body));
+    await Users.findOne({ Username: req.body.Username })
+      .then((user) => {
+        if (user) {
+          res.status(400).send(req.body.Username + ' already exists');
+        } else {
+          Users.create({
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthdate: req.body.Birthdate
+          })
+          .then((user) =>{
+            res.status(201).json(user);
+          }).catch((error) => {
+              console.error(error);
+              res.status(500).send('Error trying to register new user: ' + error);
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Failed POST - Unable to register new user '+req.body.Username+': ' + error);
+      });
+  });
 
-    console.log(responseMessage);
-    res.send(responseMessage);
+// Update account information ---------------------------------------
+
+/* Request body JSON should use this format:
+    {
+        Username: String,   (required)
+        Password: String,   (required)
+        Email: String,      (required)
+        Birthdate: Date
+    }
+*/
+app.put('/users/:Username', async (req, res) => {
+    console.log("Trying to update account information for "+req.params.Username+": "+JSON.stringify(req.body));
+
+    //Check to see if new Username is already taken????
+
+    await Users.findOneAndUpdate({ Username: req.params.Username }, 
+        { $set: {
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthdate: req.body.Birthdate
+            }
+        },
+        { new: true } //Send updated account info JSON back as response.
+
+    ).then((updatedUser) => {
+        res.status(200).json(updatedUser);
+    }).catch((err) => {
+        console.error(err);
+        res.status(500).send('Failed PUT - Error updating account informaion: ' + err);
+      });
 });
 
-// Update an account username OR password ---------------------------------------
-app.put('/users', (req, res) => {
-    let responseMessage = 'Successful PUT : This would validate user account credentials with new username OR password held in req.body';
-
-    //req.body will contain either new usernam OR new password to be reset
-
-    console.log(responseMessage);
-    res.send(responseMessage);
-});
 
 // Add a movie to user's favorites list ---------------------------------------
-app.post('/movies/favorites/:title', (req, res) => {
-    let responseMessage = 'Successful POST : Trying to add movie '+req.params.title+' to favorites list for current account';
 
-    console.log(responseMessage);
-    res.send(responseMessage);
+/* Request body JSON should use this format:
+    {
+        Username: String,   (required)
+        Password: String,   (required)
+    }
+*/
+app.post('/movies/favorites/:MovieID', async (req, res) => {
+    console.log('Trying to add movie '+req.params.MovieID+' to favorites list for account: '+req.body.Username);
+
+    // Check for valid MovieID here???
+    // Check if MovieID already in favorites list???
+
+    await Users.findOneAndUpdate({Username: req.body.Username, Password: req.body.Password},
+        {$push: {FavoriteMovies: req.params.MovieID}},
+        {new:true}
+    ).then((updatedUser) => {
+        res.status(200).json(updatedUser);
+    }).catch((err) => {
+        console.error(err);
+        res.status(500).send("Failed POST - Could not add MovieID "+req.params.MovieID+" to favorites list: "+err);
+    });
 });
 
 // Remove a movie from user's favorites list -----------------------------------
-app.delete('/movies/favorites/:title', (req, res) => {
-    let responseMessage = 'Successful DELETE : Trying to delete movie '+req.params.title+' from favorites list for current account';
 
-    console.log(responseMessage);
-    res.send(responseMessage);
+/* Request body JSON should use this format:
+    {
+        Username: String,   (required)
+        Password: String,   (required)
+    }
+*/
+
+app.delete('/movies/favorites/:MovieID', async (req, res) => {
+    console.log('Trying to delete movie '+req.params.MovieID+' from favorites list for account '+req.body.Username);
+
+    // Check for valid MovieID here???
+    // Check if MovieID is NOT in favorites list???
+
+    await Users.findOneAndUpdate({Username: req.body.Username, Password: req.body.Password},
+        {$pull: {FavoriteMovies: req.params.MovieID}},
+        {new:true}
+    ).then((updatedUser) => {
+        res.status(200).json(updatedUser);
+    }).catch((err) => {
+        console.error(err);
+        res.status(500).send("Failed DELETE - Could not remove MovieID "+req.params.MovieID+" from favorites list: "+err);
+    });
 });
 
 // Deregister a user account --------------------------------------------------
-app.delete('/users', (req, res) => {
-    let responseMessage = 'Successful DELETE : This will deregister a user account with valid credentials in req.body';
 
-    //req.body will contain credentials for the account to be deleted
+/* Request body JSON should use this format:
+    {
+        Username: String,   (required)
+        Password: String,   (required)
+    }
+*/
 
-    console.log(responseMessage);
-    res.send(responseMessage);
+app.delete('/users', async (req, res) => {
+    console.log("Trying to deregister user account : "+req.body.Username);
+    await Users.findOneAndDelete({Username: req.body.Username, Password: req.body.Password})
+        .then((deletedUser) => {
+            if(!deletedUser) {
+                res.status(400).send("User "+req.body.Username+" could not be found.");
+            } else {
+                res.status(200).send("DELETE successful : account "+req.body.Username+" has been removed.")
+            }
+        }).catch((err) => {
+            console.error(err);
+            res.status(500).send("Failed DELETE - Could not remove account "+req.body.Username+" due to server error: "+err);
+        });
 });
 
 

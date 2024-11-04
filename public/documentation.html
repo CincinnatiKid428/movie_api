@@ -21,17 +21,6 @@
 
     <p>
         <h3>API Endpoints &amp; Descriptions</h3>
-        <!--ul>
-            <li><b>GET /movies</b> will return a list of ALL movies</li>
-            <li><b>GET /movies/[title]</b> will return data (description, genre, director, image URL, whether it is featured or not) about a single movie by title</li>
-            <li><b>GET /genre/[name]</b> will return data about a genre (description) by name/title (e.g., "Thriller")</li>
-            <li><b>GET /director/[name]</b> will return data about a director (bio, birth year, death year) by name</li>
-            <li><b>POST /users/[username]/[password]</b> will register a new user with username/password as user's chosen credentials</li>
-            <li><b>PUT /users/[username]/[password]/[newUserName]</b> will updated an exisiting user's username</li>
-            <li><b>POST /users/favorites/[username]/[password]/[title]</b> will add a movie by title to a favorites list and return text response</li>
-            <li><b>DELETE /users/favorites/[username]/[password]/[title]</b> will remove a movie by title from a favorites list and return text response</li>
-            <li><b>DELETE /users/[username]/[password]</b> will deregister a user</li>
-        </ul-->
     </p>
 
     <div>
@@ -46,25 +35,25 @@
             </tr>
 
             <tr>
-                <td class="description-cell">Returns a list of ALL movies</td>
+                <td class="description-cell">Returns a list of ALL movie titles</td>
                 <td class="url-cell center-cell">/movies</td>
                 <td class="http-method-cell center-cell">GET</td>
                 <td class="req-params-cell center-cell">none</td>
                 <td class="req-body-cell center-cell">none</td>
-                <td class="res-body-cell">A JSON format response containing an array of movies like:
+                <td class="res-body-cell">A JSON format response containing an array of movie titles like:
                     <p>
                     {<br>
                         "movies" : [<br>
-                            <blockquote>{"title" : "Stand by Me"},<br>
-                            {"title" : "The Shawshank Redemption"},<br>
-                            {"title" : "Indiana Jones: Raiders of the Lost Ark"},<br>
-                            {"title" : "Dune"},<br>
-                            {"title" : "Fight Club"},<br>
-                            {"title" : "Donnie Darko"},<br>
-                            {"title" : "Ghostbusters"},<br>
-                            {"title" : "Halloween"},<br>
-                            {"title" : "The Matrix"},<br>
-                            {"title" : "Primer"}<br>
+                            <blockquote>"Stand by Me",<br>
+                            "The Shawshank Redemption",<br>
+                            "Indiana Jones: Raiders of the Lost Ark",<br>
+                            "Dune",<br>
+                            "Fight Club",<br>
+                            "Donnie Darko",<br>
+                            "Ghostbusters",<br>
+                            "Halloween",<br>
+                            "The Matrix",<br>
+                            "Primer"<br>
                         ]</blockquote>
                     }
                     </p>
@@ -72,58 +61,62 @@
             </tr>
 
             <tr>
-                <td class="description-cell">Returns data (description, genre, director, image URL, whether it is featured or not) about a single movie by title</td>
-                <td class="url-cell center-cell">/movies/[title]</td>
+                <td class="description-cell">Returns data (description, genre, director, image URL, whether it is featured or not) about a single movie by Title</td>
+                <td class="url-cell center-cell">/movies/[Title]</td>
                 <td class="http-method-cell center-cell">GET</td>
-                <td class="req-params-cell"><b>title</b> is the title of the movie the user is looking for information about</td>
+                <td class="req-params-cell"><b>Title</b> is the Title of the movie the user is looking for information about</td>
                 <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A JSON format response containing information about a single movie like:
                     <p>
                         {<br>
-                            "movie" : [
-                        <blockquote>{"title" : "Stand by Me"},<br>
-                                {"releaseyear : "1986"},<br>
-                                {"rating" : "8.1"},<br>
-                                {"description" : "A plot summary."},<br>
-                                {"director" : "Rob Reiner"},<br>
-                                {"genre" : "Drama"},<br>
-                                {"actors" : ["Wil Wheaton", "River Phoenix", "Corey Feldman", "Keifer Sutherland"]},<br>
-                                {"imgURL" : "https://someplace.com/stand-by-me.jpg"},<br>
-                                {"featured" : "true"},<br>
-                            ]</blockquote>
+                        <blockquote>"Title" : "Stand by Me",<br>
+                                "ReleaseYear : "1986",<br>
+                                "Rating" : "8.1",<br>
+                                "Description" : "A plot summary.",<br>
+                                "Director" : "Rob Reiner",<br>
+                                "Genre" : "Drama",<br>
+                                "Actors" : ["Wil Wheaton", "River Phoenix", "Corey Feldman", "Keifer Sutherland"],<br>
+                                "ImageURL" : "https://someplace.com/stand-by-me.jpg",<br>
+                                "Featured" : "true"<br>
+                        </blockquote>
                         }
                         </p>
                 </td>
             </tr>
 
             <tr>
-                <td class="description-cell">Returns data about a genre (description) by name/title (e.g., "Thriller")</td>
-                <td class="url-cell center-cell">/genre/[name]</td>
+                <td class="description-cell">Returns data about a genre (description) by name/Title (e.g., "Thriller")</td>
+                <td class="url-cell center-cell">/genre/[Name]</td>
                 <td class="http-method-cell center-cell">GET</td>
-                <td class="req-params-cell center-cell"><b>name</b> is the name of the genre the user is looking for information about</td>
+                <td class="req-params-cell center-cell"><b>Name</b> is the name of the genre the user is looking for information about</td>
                 <td class="req-body-cell center-cell">none</td>
-                <td class="res-body-cell">A text message description of the genre in the requst parameters</td>
+                <td class="res-body-cell">A text message description of the genre in the requst parameters
+                    <p>{<br>
+                        <blockquote>"Name" : "Drama",<br>
+                            "Description" : "The drama genre is characterized by..."
+                        </blockquote>
+                    }
+                    </p>
+                </td>
             </tr>
 
             <tr>
-                <td class="description-cell">Returns data about a director (bio, birth year, death year) by name</td>
-                <td class="url-cell center-cell">/director/[name]</td>
+                <td class="description-cell">Returns data about a director (bio, birth/death year, movies) by name</td>
+                <td class="url-cell center-cell">/director/[Name]</td>
                 <td class="http-method-cell center-cell">GET</td>
-                <td class="req-params-cell"><b>name</b> is the name of the director to look up information</td>
+                <td class="req-params-cell"><b>Name</b> is the name of the director to look up information</td>
                 <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A JSON format object holding data about the director like:
                     <p>
                         {<br>
-                            "director" : [
-                                <blockquote>{"name" : "Rob Reiner"},<br>
-                                {"bio" : "A short biography."}<br>
-                                {"birthYear" : "1947"},<br>
-                                {"deathYear" : ""},<br>
-                                {"movies" : ["Stand by Me", "When Harry Met Sally", "Misery", "A Few Good Men"]}
-                                
-                            ]</blockquote>
+                            <blockquote>"Name" : "Rob Reiner",<br>
+                                "Bio" : "A short biography."<br>
+                                "BirthYear" : "1947",<br>
+                                "DeathYear" : "",<br>
+                                "Movies" : ["Stand by Me", "When Harry Met Sally", "Misery", "A Few Good Men"]
+                            </blockquote>
                         }
-                        </p>
+                    </p>
                 </td>
             </tr>
 
@@ -132,65 +125,107 @@
                 <td class="url-cell center-cell">/users</td>
                 <td class="http-method-cell center-cell">POST</td>
                 <td class="req-params-cell center-cell">none</td>
-                <td class="req-body-cell">A JSON object holding the desired credentials to register a new account like:
+                <td class="req-body-cell">A JSON object holding the desired information to register a new account like:
                     <p>{<br>
-                        "credentials" :
-                        <blockquote>{"username" : "Saffron" , "password" : "meow1234!"}</blockquote>
+                        <blockquote>"Username" : "Saffron",<br>
+                            "Password" : "meow1234!",<br>
+                            "Email" : "risotto@email.com",<br>
+                            "Birthdate" : "2022/10/31"
+                        </blockquote>
                     }
                     </p>
                 </td>
-                <td class="res-body-cell">A text message if the user account was created or not</td>
+                <td class="res-body-cell">A JSON object holding the new account information or error message if creation failed:
+                    <p>{<br>
+                        <blockquote>"_id": "672646c255a517151e82293c",<br>
+                            "Username" : "Saffron",<br>
+                            "Password" : "meow1234!",<br>
+                            "Email" : "risotto@email.com",<br>
+                            "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
+                            "FavoriteMovies" : []
+                        </blockquote>
+                    }
+                    </p>
+                </td>
             </tr>
 
             <tr>
-                <td class="description-cell">Updates an exisiting user's account username or password. Business logic will determine which field the request is attempting to update.</td>
-                <td class="url-cell center-cell">/users</td>
+                <td class="description-cell">Updates an exisiting user's account information. Business logic will determine which fields the request is attempting to update.</td>
+                <td class="url-cell center-cell">/users/[Username]</td>
                 <td class="http-method-cell center-cell">PUT</td>
-                <td class="req-params-cell center-cell">none</td>
-                <td class="req-body-cell">A JSON object with the new username or password to be updated. Only one may be updated per request, the other value will default to "0".
+                <td class="req-params-cell"><b>Username</b> is the account Username to receive updated information in request body.</td>
+                <td class="req-body-cell">A JSON object with account information to be updated.
                     <p>{<br>
-                        "credentials" :
-                        <blockquote>{"username" : "Zoey428" , "password" : "0"}</blockquote>
-                    }
+                        <blockquote>"Username" : "Fred09",<br>
+                            "Password" : "abc555!",<br>
+                            "Email" : "fred09@email.com",<br>
+                            "Birthdate" : "1978/05/26"
+                        </blockquote>
+                        }
                     </p>
-                    <p>OR</p>
+                </td>
+                <td class="res-body-cell">A JSON object holding the updated account information or message of failure to update:
                     <p>{<br>
-                        "credentials" :
-                        <blockquote>{"username" : "0" , "password" : "CatNap789!"}</blockquote>
+                        <blockquote>"_id": "672646c255a517151e82293c",<br>
+                            "Username" : "Fred09",<br>
+                            "Password" : "abc555!",<br>
+                            "Email" : "fred09@email.com",<br>
+                            "Birthdate" : "ISODate('1978-05-26T04:00:00.000Z')",<br>
+                            "FavoriteMovies" : []
+                        </blockquote>
                     }
                     </p>
                 </td>
-                <td class="res-body-cell">A text message notifying of success/failure with updating username/password</td>
             </tr>
 
             <tr>
-                <td class="description-cell">Adds a movie by title to a favorites list and return text response</td>
-                <td class="url-cell center-cell">/movies/favorites/[title]</td>
+                <td class="description-cell">Adds a movie by Title to a favorites list and return text response</td>
+                <td class="url-cell center-cell">/movies/favorites/[MovieID]</td>
                 <td class="http-method-cell center-cell">POST</td>
-                <td class="req-params-cell"><b>title</b> is the name of the movie to be added to the user's list</td>
+                <td class="req-params-cell"><b>MovieID</b> is the _id field of the movie to be added to the user's list</td>
                 <td class="req-body-cell">A JSON format object holding user credentials like: 
                     <p>{<br>
-                        "credentials" :
-                        <blockquote>{"username" : "Saffron" , "password" : "meow1234!"}</blockquote>
+                        <blockquote>"Username" : "Saffron" , "Password" : "meow1234!"</blockquote>
                     }
                     </p>
                 </td>
-                <td class="res-body-cell">A text message indicating if adding the movie to list was a success/failure</td>
+                <td class="res-body-cell">A JSON response with updated User favorite movies or error due to failure:
+                    <p>{<br>
+                        <blockquote>"_id": "672646c255a517151e82293c",<br>
+                            "Username" : "Saffron",<br>
+                            "Password" : "meow1234!",<br>
+                            "Email" : "risotto@email.com",<br>
+                            "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
+                            "FavoriteMovies" : ["671ebe39577ed8cab386b022"]
+                        </blockquote>
+                    }
+                    </p>
+                </td>
             </tr>
 
             <tr>
-                <td class="description-cell">Removes a movie by title from a favorites list and return text response</td>
-                <td class="url-cell center-cell">/movies/favorites/[title]</td>
+                <td class="description-cell">Removes a movie by Title from a favorites list and return text response</td>
+                <td class="url-cell center-cell">/movies/favorites/[MovieID]</td>
                 <td class="http-method-cell center-cell">DELETE</td>
-                <td class="req-params-cell"><b>title</b> is the name of the movie to be removed the user's list</td>
+                <td class="req-params-cell"><b>MovieID</b> is the _id field of the movie to be removed the user's list</td>
                 <td class="req-body-cell">A JSON format object holding user credentials like: 
                     <p>{<br>
-                        "credentials" :
-                        <blockquote>{"username" : "Saffron" , "password" : "meow1234!"}</blockquote>
+                        <blockquote>"Username" : "Saffron" , "Password" : "meow1234!"</blockquote>
                     }
                     </p>
                 </td>
-                <td class="res-body-cell">A text response indicating success/failure of removing the favorite movie from list</td>
+                <td class="res-body-cell">A JSON response with updated User favorite movies or error due to failure:
+                    <p>{<br>
+                        <blockquote>"_id": "672646c255a517151e82293c",<br>
+                            "Username" : "Saffron",<br>
+                            "Password" : "meow1234!",<br>
+                            "Email" : "risotto@email.com",<br>
+                            "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
+                            "FavoriteMovies" : []
+                        </blockquote>
+                    }
+                    </p>
+                </td>
             </tr>
 
             <tr>
@@ -200,8 +235,7 @@
                 <td class="req-params-cell center-cell">none</td>
                 <td class="req-body-cell">
                     <p>{<br>
-                        "credentials" :
-                        <blockquote>{"username" : "Saffron" , "password" : "meow1234!"}</blockquote>
+                        <blockquote>"Username" : "Saffron" , "Password" : "meow1234!"</blockquote>
                     }
                     </p>
                 </td>
