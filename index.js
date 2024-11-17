@@ -25,6 +25,9 @@ app.use(morgan('common', {stream: accessLogStream}));
 
 app.use(bodyParser.json()); // parse request bodies into JSON format
 
+let auth = require('./auth.js')(app);
+const passport = require('passport');
+require('./passport.js');
 
 
 
@@ -39,7 +42,7 @@ app.get('/documentation', (req, res) => {
 });
 
 // Get a list of all movies (titles) ---------------------------------------
-app.get('/movies', async (req, res) => {
+app.get('/movies', passport.authenticate('jwt', {session:false}), async (req, res) => {
     console.log("Request for list of all movies...");
     await Movies.find()
         .then((responseMovies) => {
@@ -61,7 +64,7 @@ app.get('/movies', async (req, res) => {
 });
 
 // Get information about a movie by title ---------------------------------------
-app.get('/movies/:Title', async (req, res) => {
+app.get('/movies/:Title', passport.authenticate('jwt', {session:false}), async (req, res) => {
     console.log('GET : Searching for info on movie: '+req.params.Title);
     await Movies.findOne({Title: req.params.Title})
         .then((movieFound) => {
@@ -111,7 +114,7 @@ app.get('/movies/:Title', async (req, res) => {
 });
 
 // Get information about a genre by name ---------------------------------------
-app.get('/genre/:Name', async (req, res) => {
+app.get('/genre/:Name', passport.authenticate('jwt', {session:false}), async (req, res) => {
     console.log('Looking for information about the movie genre '+req.params.Name);
     await Movies.findOne({"Genre.Name" : req.params.Name})
         .then((genreFoundInMovie) => {
@@ -123,7 +126,7 @@ app.get('/genre/:Name', async (req, res) => {
 });
 
 // Get information about a director by name -------------------------------------
-app.get('/director/:Name', async (req, res) => {
+app.get('/director/:Name', passport.authenticate('jwt', {session:false}), async (req, res) => {
     console.log('Looking for information about director '+req.params.Name);
     await Movies.findOne({"Director.Name" : req.params.Name})
         .then((directorFoundInMovie) => {
@@ -182,27 +185,51 @@ app.post('/users', async (req, res) => {
         Birthdate: Date
     }
 */
-app.put('/users/:Username', async (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', {session: false}), async (req, res) => {
     console.log("Trying to update account information for "+req.params.Username+": "+JSON.stringify(req.body));
 
-    //Check to see if new Username is already taken????
+    let passedChecks = true;
 
-    await Users.findOneAndUpdate({ Username: req.params.Username }, 
-        { $set: {
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthdate: req.body.Birthdate
+    //Check to see if Username to update matches the info in token:
+    if(req.user.Username !== req.params.Username){
+        passedChecks = false;
+        return res.status(400).send('Permission denied');
+    }
+
+    //Check to make sure new username is not already taken by an existing account:
+    await Users.findOne({Username:req.body.Username})
+        .then((user)=>{
+            if(user){
+                passedChecks = false;
+                console.log('New username ['+req.body.Username+'] is unavailable.')
+                return res.status(400).send('Username ['+req.body.Username+'] is already taken, please try a different username.');
             }
-        },
-        { new: true } //Send updated account info JSON back as response.
+        }).catch((err) => {
+            passedChecks = false;
+            console.error('Error while checking username availability: '+err);
+            return res.status(400).send(err);
+        });
 
-    ).then((updatedUser) => {
-        res.status(200).json(updatedUser);
-    }).catch((err) => {
-        console.error(err);
-        res.status(500).send('Failed PUT - Error updating account informaion: ' + err);
-      });
+        //If all checks passed, then update account info
+        if(passedChecks){
+            console.log('Passed username checks: username matched & new username is available.');
+            await Users.findOneAndUpdate({ Username: req.params.Username }, 
+                { $set: {
+                    Username: req.body.Username,
+                    Password: req.body.Password,
+                    Email: req.body.Email,
+                    Birthdate: req.body.Birthdate
+                    }
+                },
+                { new: true } //Send updated account info JSON back as response.
+        
+            ).then((updatedUser) => {
+                res.status(200).json(updatedUser);
+            }).catch((err) => {
+                console.error(err);
+                res.status(500).send('Failed PUT - Error updating account informaion: ' + err);
+              });
+        }
 });
 
 
@@ -214,7 +241,7 @@ app.put('/users/:Username', async (req, res) => {
         Password: String,   (required)
     }
 */
-app.post('/movies/favorites/:MovieID', async (req, res) => {
+app.post('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:false}), async (req, res) => {
     console.log('Trying to add movie '+req.params.MovieID+' to favorites list for account: '+req.body.Username);
 
     // Check for valid MovieID here???
@@ -240,7 +267,7 @@ app.post('/movies/favorites/:MovieID', async (req, res) => {
     }
 */
 
-app.delete('/movies/favorites/:MovieID', async (req, res) => {
+app.delete('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:false}), async (req, res) => {
     console.log('Trying to delete movie '+req.params.MovieID+' from favorites list for account '+req.body.Username);
 
     // Check for valid MovieID here???
@@ -266,7 +293,7 @@ app.delete('/movies/favorites/:MovieID', async (req, res) => {
     }
 */
 
-app.delete('/users', async (req, res) => {
+app.delete('/users', passport.authenticate('jwt', {session:false}), async (req, res) => {
     console.log("Trying to deregister user account : "+req.body.Username);
     await Users.findOneAndDelete({Username: req.body.Username, Password: req.body.Password})
         .then((deletedUser) => {
@@ -290,5 +317,5 @@ app.use((err, req, res, next) => {
 
 
 app.listen(8080, () => {
-    console.log('Movie API server is up and listening on port 8080...');
+    console.log('myFlix Movie API server is up and listening on port 8080...');
 });
