@@ -244,18 +244,31 @@ app.put('/users/:Username', passport.authenticate('jwt', {session: false}), asyn
 app.post('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:false}), async (req, res) => {
     console.log('Trying to add movie '+req.params.MovieID+' to favorites list for account: '+req.body.Username);
 
-    // Check for valid MovieID here???
-    // Check if MovieID already in favorites list???
+    let passedChecks = true;
 
-    await Users.findOneAndUpdate({Username: req.body.Username, Password: req.body.Password},
-        {$push: {FavoriteMovies: req.params.MovieID}},
-        {new:true}
-    ).then((updatedUser) => {
-        res.status(200).json(updatedUser);
-    }).catch((err) => {
-        console.error(err);
-        res.status(500).send("Failed POST - Could not add MovieID "+req.params.MovieID+" to favorites list: "+err);
-    });
+    // Check for valid MovieID here???
+    await Movies.findOne({_id:req.params.MovieID})
+        .then((movie)=>{
+            if(!movie){
+                passedChecks = false;
+                return res.status(400).send('Unable to find movieID: '+req.params.movieID);
+            }
+        }).catch((err)=>{
+            passedChecks = false;
+            console.error('Error checking database for movieID '+req.params.movieID+': '+err);
+        });
+
+    if(passedChecks){
+        await Users.findOneAndUpdate({Username: req.body.Username, Password: req.body.Password},
+            {$addToSet: {FavoriteMovies: req.params.MovieID}}, //$addToSet: handles if movie is already in list prior to add
+            {new:true}
+        ).then((updatedUser) => {
+            res.status(200).json(updatedUser);
+        }).catch((err) => {
+            console.error(err);
+            res.status(500).send("Failed POST - Could not add MovieID "+req.params.MovieID+" to favorites list: "+err);
+        });
+    }
 });
 
 // Remove a movie from user's favorites list -----------------------------------
@@ -270,18 +283,34 @@ app.post('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:fal
 app.delete('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:false}), async (req, res) => {
     console.log('Trying to delete movie '+req.params.MovieID+' from favorites list for account '+req.body.Username);
 
-    // Check for valid MovieID here???
-    // Check if MovieID is NOT in favorites list???
+    let passedChecks = true;
 
-    await Users.findOneAndUpdate({Username: req.body.Username, Password: req.body.Password},
-        {$pull: {FavoriteMovies: req.params.MovieID}},
-        {new:true}
-    ).then((updatedUser) => {
-        res.status(200).json(updatedUser);
-    }).catch((err) => {
-        console.error(err);
-        res.status(500).send("Failed DELETE - Could not remove MovieID "+req.params.MovieID+" from favorites list: "+err);
-    });
+    // Check for valid MovieID here
+    await Movies.findOne({_id:req.params.MovieID})
+        .then((movie)=>{
+            if(!movie){
+                passedChecks = false;
+                return res.status(400).send('Unable to find movieID: '+req.params.movieID);
+            }
+        }).catch((err)=>{
+            passedChecks = false;
+            console.error('Error checking database for movieID '+req.params.movieID+': '+err);
+            return res.status(400).send('Error checking database for movieID '+req.params.movieID+': '+err);
+        });
+
+    // Check if MovieID is NOT in favorites list???
+    if(passedChecks){
+        await Users.findOneAndUpdate({Username: req.body.Username, Password: req.body.Password},
+            {$pull: {FavoriteMovies: req.params.MovieID}}, //$pull: handles if item is not in the array
+            {new:true}
+        ).then((updatedUser) => {
+            res.status(200).json(updatedUser);
+        }).catch((err) => {
+            console.error(err);
+            res.status(500).send("Failed DELETE - Could not remove MovieID "+req.params.MovieID+" from favorites list: "+err);
+        });
+    }
+
 });
 
 // Deregister a user account --------------------------------------------------
