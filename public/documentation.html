@@ -139,7 +139,7 @@
                     <p>{<br>
                         <blockquote>"_id": "672646c255a517151e82293c",<br>
                             "Username" : "Saffron",<br>
-                            "Password" : "meow1234!",<br>
+                            "Password" : "(Hashed Password)",<br>
                             "Email" : "risotto@email.com",<br>
                             "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
                             "FavoriteMovies" : []
@@ -150,7 +150,7 @@
             </tr>
 
             <tr>
-                <td class="description-cell">Updates an exisiting user's account information. Business logic will determine which fields the request is attempting to update.</td>
+                <td class="description-cell">Updates an exisiting user's account information. </td>
                 <td class="url-cell center-cell">/users/[Username]</td>
                 <td class="http-method-cell center-cell">PUT</td>
                 <td class="req-params-cell"><b>Username</b> is the account Username to receive updated information in request body.</td>
@@ -168,7 +168,7 @@
                     <p>{<br>
                         <blockquote>"_id": "672646c255a517151e82293c",<br>
                             "Username" : "Fred09",<br>
-                            "Password" : "abc555!",<br>
+                            "Password" : "(Hashed Password)",<br>
                             "Email" : "fred09@email.com",<br>
                             "Birthdate" : "ISODate('1978-05-26T04:00:00.000Z')",<br>
                             "FavoriteMovies" : []
@@ -179,13 +179,13 @@
             </tr>
 
             <tr>
-                <td class="description-cell">Adds a movie by Title to a favorites list and return text response</td>
+                <td class="description-cell">Adds a movie by MovieID to a favorites list</td>
                 <td class="url-cell center-cell">/movies/favorites/[MovieID]</td>
                 <td class="http-method-cell center-cell">POST</td>
                 <td class="req-params-cell"><b>MovieID</b> is the _id field of the movie to be added to the user's list</td>
                 <td class="req-body-cell">A JSON format object holding user credentials like: 
                     <p>{<br>
-                        <blockquote>"Username" : "Saffron" , "Password" : "meow1234!"</blockquote>
+                        <blockquote>"Username" : "Saffron"</blockquote>
                     }
                     </p>
                 </td>
@@ -193,7 +193,7 @@
                     <p>{<br>
                         <blockquote>"_id": "672646c255a517151e82293c",<br>
                             "Username" : "Saffron",<br>
-                            "Password" : "meow1234!",<br>
+                            "Password" : "(Hashed Password)",<br>
                             "Email" : "risotto@email.com",<br>
                             "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
                             "FavoriteMovies" : ["671ebe39577ed8cab386b022"]
@@ -204,13 +204,13 @@
             </tr>
 
             <tr>
-                <td class="description-cell">Removes a movie by Title from a favorites list and return text response</td>
+                <td class="description-cell">Removes a movie by MovieID from a favorites list</td>
                 <td class="url-cell center-cell">/movies/favorites/[MovieID]</td>
                 <td class="http-method-cell center-cell">DELETE</td>
                 <td class="req-params-cell"><b>MovieID</b> is the _id field of the movie to be removed the user's list</td>
                 <td class="req-body-cell">A JSON format object holding user credentials like: 
                     <p>{<br>
-                        <blockquote>"Username" : "Saffron" , "Password" : "meow1234!"</blockquote>
+                        <blockquote>"Username" : "Saffron"</blockquote>
                     }
                     </p>
                 </td>
@@ -218,7 +218,7 @@
                     <p>{<br>
                         <blockquote>"_id": "672646c255a517151e82293c",<br>
                             "Username" : "Saffron",<br>
-                            "Password" : "meow1234!",<br>
+                            "Password" : "(Hashed Password)",<br>
                             "Email" : "risotto@email.com",<br>
                             "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
                             "FavoriteMovies" : []
@@ -235,11 +235,39 @@
                 <td class="req-params-cell center-cell">none</td>
                 <td class="req-body-cell">
                     <p>{<br>
-                        <blockquote>"Username" : "Saffron" , "Password" : "meow1234!"</blockquote>
+                        <blockquote>"Username" : "Saffron"</blockquote>
                     }
                     </p>
                 </td>
                 <td class="res-body-cell">A text response confirming success/failure of deregister operation</td>
+            </tr>
+
+            <tr>
+                <td class="description-cell">User login</td>
+                <td class="url-cell center-cell">/login</td>
+                <td class="http-method-cell center-cell">POST</td>
+                <td class="req-params-cell center-cell">none</td>
+                <td class="req-body-cell">
+                    <p>{<br>
+                        <blockquote>"Username" : "Saffron" , "Password" : "meow1234!"</blockquote>
+                    }
+                    </p>
+                </td>
+                <td class="res-body-cell">A JSON response containing the User document as well as JWT token for authentication</td>
+                <p>{<br>
+                    "user":{
+                    <blockquote>"_id": "672646c255a517151e82293c",<br>
+                        "Username" : "Saffron",<br>
+                        "Password" : "(Hashed Password)",<br>
+                        "Email" : "risotto@email.com",<br>
+                        "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
+                        "FavoriteMovies" : [],
+                        "__v": 0
+                    </blockquote>
+                    },<br>
+                    "token": "s25df6S6dfA6S4dFa788sD9G9A9Sg5a5wGuHW..."<br>
+                }
+                </p>
             </tr>
         </table>
     </div>

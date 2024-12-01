@@ -17,10 +17,17 @@ passport.use(new LocalStrategy(
         console.log(`Authenticating username/passowrd : ${username} ${password}`);
         await Users.findOne({Username:username})
         .then((user) => {
+            //Valid username check
             if(!user){
                 console.log('Incorrect username ['+username+'] no user found.');
                 return callback(null, false, {message: 'Incorrect username/password.'});
             }
+            //Valid password check
+            if(!user.validatePassword(password)){
+                console.log('Incorrect password');
+                return callback(null, false, {message:'Incorrect password.'});
+            }
+
             console.log('Found user" '+user);
             return callback(null, user);
         })

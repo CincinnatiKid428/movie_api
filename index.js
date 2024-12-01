@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+const {check, validationResult} = require('express-validator');
+
 const fs = require('fs'); 
 const path = require('path');
 const morgan = require('morgan');
@@ -64,7 +66,16 @@ app.get('/movies', passport.authenticate('jwt', {session:false}), async (req, re
 });
 
 // Get information about a movie by title ---------------------------------------
-app.get('/movies/:Title', passport.authenticate('jwt', {session:false}), async (req, res) => {
+app.get('/movies/:Title', passport.authenticate('jwt', {session:false}), 
+  [
+    check('Title','Invalid movie ID').isAlphanumeric()
+  ], async (req, res) => {
+
+    //Check validation on director name
+    let validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()){
+        console.log('Validation error with movie ID parameter: '+validationErrors);
+    }
     console.log('GET : Searching for info on movie: '+req.params.Title);
     await Movies.findOne({Title: req.params.Title})
         .then((movieFound) => {
@@ -114,7 +125,17 @@ app.get('/movies/:Title', passport.authenticate('jwt', {session:false}), async (
 });
 
 // Get information about a genre by name ---------------------------------------
-app.get('/genre/:Name', passport.authenticate('jwt', {session:false}), async (req, res) => {
+app.get('/genre/:Name', passport.authenticate('jwt', {session:false}), 
+  [
+    check('Name','Invalid genre name').isAlpha()
+  ], async (req, res) => {
+
+    //Check validation on director name
+    let validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()){
+        console.log('Validation error with genre name parameter: '+validationErrors);
+    }
+
     console.log('Looking for information about the movie genre '+req.params.Name);
     await Movies.findOne({"Genre.Name" : req.params.Name})
         .then((genreFoundInMovie) => {
@@ -126,7 +147,17 @@ app.get('/genre/:Name', passport.authenticate('jwt', {session:false}), async (re
 });
 
 // Get information about a director by name -------------------------------------
-app.get('/director/:Name', passport.authenticate('jwt', {session:false}), async (req, res) => {
+app.get('/director/:Name', passport.authenticate('jwt', {session:false}), 
+  [
+    check('Name','Invalid director name').isAlpha()
+  ], async (req, res) => {
+
+    //Check validation on director name
+    let validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()){
+        console.log('Validation error with director name parameter: '+validationErrors);
+    }
+
     console.log('Looking for information about director '+req.params.Name);
     await Movies.findOne({"Director.Name" : req.params.Name})
         .then((directorFoundInMovie) => {
@@ -142,31 +173,51 @@ app.get('/director/:Name', passport.authenticate('jwt', {session:false}), async 
 /* Request body JSON should use this format:
     {
         Username: String,
-        Password: String,
+        Password: String,  //will be hashed prior to storing
         Email: String,
         Birthdate: Date
     }
 }*/
-app.post('/users', async (req, res) => {
+app.post('/users',
+  [
+    //Validate user inputted fields from request body
+        check('Username','Username cannot be empty').not().isEmpty(),
+        check('Username','Username must be at least 5 characters').isLength({min:5}),
+        check('Username','Username contains non-alphanumeric characters -- not permitted').isAlphanumeric(),
+        check('Password','Password cannot be empty').not().isEmpty(),
+        check('Email','Email address is invalid').isEmail()
+        //Date validation for Birthdate?
+  ],
+  async (req, res) => {
+    
+    //Check for validation errors before registering new user
+    let validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()){
+        console.log('User input validation falied: '+validationErrors);
+        return res.status(422).json({errors:validationErrors.array()});
+    }
+
     console.log('Trying to register a user: ');
     console.log(JSON.stringify(req.body));
+
     await Users.findOne({ Username: req.body.Username })
       .then((user) => {
         if (user) {
           res.status(400).send(req.body.Username + ' already exists');
         } else {
-          Users.create({
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthdate: req.body.Birthdate
-          })
-          .then((user) =>{
-            res.status(201).json(user);
-          }).catch((error) => {
-              console.error(error);
-              res.status(500).send('Error trying to register new user: ' + error);
-          });
+            let hashedPassword = Users.hashPassword(req.body.Password); // fn() hashPassword defined in models.js
+            Users.create({
+                Username: req.body.Username,
+                Password: hashedPassword,
+                Email: req.body.Email,
+                Birthdate: req.body.Birthdate
+            })
+            .then((user) =>{
+                res.status(201).json(user);
+            }).catch((error) => {
+                console.error(error);
+                res.status(500).send('Error trying to register new user: ' + error);
+            });
         }
       })
       .catch((error) => {
@@ -185,13 +236,33 @@ app.post('/users', async (req, res) => {
         Birthdate: Date
     }
 */
-app.put('/users/:Username', passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.put('/users/:Username', 
+  [
+    passport.authenticate('jwt', {session: false}),
+  
+    //Validate user input here
+    check('Username','Username cannot be empty').not().isEmpty(),
+    check('Username','Username must be at least 5 characters').isLength({min:5}),
+    check('Username','Username contains non-alphanumeric characters -- not permitted').isAlphanumeric(),
+    check('Password','Password cannot be empty').not().isEmpty(),
+    check('Email','Email address is invalid').isEmail()
+    //Date validation for Birthdate?
+
+  ], async (req, res) => {
+
+    //Check for validation errors before updating account info
+    let validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()){
+        console.log('User input validation falied: '+validationErrors);
+        return res.status(422).json({errors:validationErrors.array()});
+    }
+
     console.log("Trying to update account information for "+req.params.Username+": "+JSON.stringify(req.body));
 
     let passedChecks = true;
 
     //Check to see if Username to update matches the info in token:
-    if(req.user.Username !== req.params.Username){
+    if(req.params.Username !== req.user.Username){
         passedChecks = false;
         return res.status(400).send('Permission denied');
     }
@@ -202,7 +273,7 @@ app.put('/users/:Username', passport.authenticate('jwt', {session: false}), asyn
             if(user){
                 passedChecks = false;
                 console.log('New username ['+req.body.Username+'] is unavailable.')
-                return res.status(400).send('Username ['+req.body.Username+'] is already taken, please try a different username.');
+                return res.status(400).send('Username ['+req.body.Username+'] is already taken, please choose a different username.');
             }
         }).catch((err) => {
             passedChecks = false;
@@ -213,10 +284,11 @@ app.put('/users/:Username', passport.authenticate('jwt', {session: false}), asyn
         //If all checks passed, then update account info
         if(passedChecks){
             console.log('Passed username checks: username matched & new username is available.');
+            let hashedPassword = Users.hashPassword(req.body.Password); // fn() hashPassword defined in models.js
             await Users.findOneAndUpdate({ Username: req.params.Username }, 
                 { $set: {
                     Username: req.body.Username,
-                    Password: req.body.Password,
+                    Password: hashedPassword,
                     Email: req.body.Email,
                     Birthdate: req.body.Birthdate
                     }
@@ -238,15 +310,26 @@ app.put('/users/:Username', passport.authenticate('jwt', {session: false}), asyn
 /* Request body JSON should use this format:
     {
         Username: String,   (required)
-        Password: String,   (required)
     }
 */
-app.post('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:false}), async (req, res) => {
+app.post('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:false}), 
+  [
+    //Validation for MovieID as alphanumeric
+    check('MovieID','Invalid movie ID - must be alphanumeric').isAlphanumeric()
+  ], async (req, res) => {
+    
+    //Check for validation errors with MovieID prior to attempting to add the movie to favorites list
+    let validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()){
+        console.log('Movie ID validation falied: '+validationErrors);
+        return res.status(422).json({errors:validationErrors.array()});
+    }
+
     console.log('Trying to add movie '+req.params.MovieID+' to favorites list for account: '+req.body.Username);
 
     let passedChecks = true;
 
-    // Check for valid MovieID here???
+    // Check for valid MovieID here
     await Movies.findOne({_id:req.params.MovieID})
         .then((movie)=>{
             if(!movie){
@@ -259,9 +342,9 @@ app.post('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:fal
         });
 
     if(passedChecks){
-        await Users.findOneAndUpdate({Username: req.body.Username, Password: req.body.Password},
+        await Users.findOneAndUpdate({Username: req.body.Username},
             {$addToSet: {FavoriteMovies: req.params.MovieID}}, //$addToSet: handles if movie is already in list prior to add
-            {new:true}
+            {new:true} //return the new document after update
         ).then((updatedUser) => {
             res.status(200).json(updatedUser);
         }).catch((err) => {
@@ -276,11 +359,22 @@ app.post('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:fal
 /* Request body JSON should use this format:
     {
         Username: String,   (required)
-        Password: String,   (required)
     }
 */
 
-app.delete('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:false}), async (req, res) => {
+app.delete('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:false}), 
+  [
+    //Validation for MovieID as alphanumeric
+    check('MovieID','Invalid movie ID - must be alphanumeric').isAlphanumeric()
+  ], async (req, res) => {
+    
+    //Check for validation errors with MovieID prior to attempting to remove the movie from favorites list
+    let validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()){
+        console.log('Movie ID validation falied: '+validationErrors);
+        return res.status(422).json({errors:validationErrors.array()});
+    }
+    
     console.log('Trying to delete movie '+req.params.MovieID+' from favorites list for account '+req.body.Username);
 
     let passedChecks = true;
@@ -318,7 +412,6 @@ app.delete('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:f
 /* Request body JSON should use this format:
     {
         Username: String,   (required)
-        Password: String,   (required)
     }
 */
 
