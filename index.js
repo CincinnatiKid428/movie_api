@@ -68,13 +68,13 @@ app.get('/movies', passport.authenticate('jwt', {session:false}), async (req, re
 // Get information about a movie by title ---------------------------------------
 app.get('/movies/:Title', passport.authenticate('jwt', {session:false}), 
   [
-    check('Title','Invalid movie ID').isAlphanumeric()
+    check('Title','Invalid movie title').isAlphanumeric()
   ], async (req, res) => {
 
-    //Check validation on director name
+    //Check validation on movie title
     let validationErrors = validationResult(req);
     if(!validationErrors.isEmpty()){
-        console.log('Validation error with movie ID parameter: '+validationErrors);
+        console.log('Validation error with movie title parameter: '+validationErrors);
     }
     console.log('GET : Searching for info on movie: '+req.params.Title);
     await Movies.findOne({Title: req.params.Title})
@@ -118,6 +118,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', {session:false}),
             console.log(parsedJson);
 
             res.status(200).json(parsedJson);
+            
         }).catch((err) => {
             console.error(err);
             res.status(500).send("Failed GET - Error looking for movie details about :"+req.params.Title+" with error : "+err);
