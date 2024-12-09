@@ -42,7 +42,7 @@
                 <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A JSON format response containing an array of movie titles like:
                     <p>
-                    {<br>
+                    {
                         "movies" : [<br>
                             <blockquote>"Stand by Me",<br>
                             "The Shawshank Redemption",<br>
@@ -68,7 +68,7 @@
                 <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A JSON format response containing information about a single movie like:
                     <p>
-                        {<br>
+                        {
                         <blockquote>"Title" : "Stand by Me",<br>
                                 "ReleaseYear : "1986",<br>
                                 "Rating" : "8.1",<br>
@@ -88,10 +88,10 @@
                 <td class="description-cell">Returns data about a genre (description) by name/Title (e.g., "Thriller")</td>
                 <td class="url-cell center-cell">/genre/[Name]</td>
                 <td class="http-method-cell center-cell">GET</td>
-                <td class="req-params-cell center-cell"><b>Name</b> is the name of the genre the user is looking for information about</td>
+                <td class="req-params-cell"><b>Name</b> is the name of the genre the user is looking for information about</td>
                 <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A text message description of the genre in the requst parameters
-                    <p>{<br>
+                    <p>{
                         <blockquote>"Name" : "Drama",<br>
                             "Description" : "The drama genre is characterized by..."
                         </blockquote>
@@ -108,7 +108,7 @@
                 <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A JSON format object holding data about the director like:
                     <p>
-                        {<br>
+                        {
                             <blockquote>"Name" : "Rob Reiner",<br>
                                 "Bio" : "A short biography."<br>
                                 "BirthYear" : "1947",<br>
@@ -136,7 +136,7 @@
                     </p>
                 </td>
                 <td class="res-body-cell">A JSON object holding the new account information or error message if creation failed:
-                    <p>{<br>
+                    <p>{
                         <blockquote>"_id": "672646c255a517151e82293c",<br>
                             "Username" : "Saffron",<br>
                             "Password" : "(Hashed Password)",<br>
@@ -165,7 +165,7 @@
                     </p>
                 </td>
                 <td class="res-body-cell">A JSON object holding the updated account information or message of failure to update:
-                    <p>{<br>
+                    <p>{
                         <blockquote>"_id": "672646c255a517151e82293c",<br>
                             "Username" : "Fred09",<br>
                             "Password" : "(Hashed Password)",<br>
@@ -183,14 +183,9 @@
                 <td class="url-cell center-cell">/movies/favorites/[MovieID]</td>
                 <td class="http-method-cell center-cell">POST</td>
                 <td class="req-params-cell"><b>MovieID</b> is the _id field of the movie to be added to the user's list</td>
-                <td class="req-body-cell">A JSON format object holding user credentials like: 
-                    <p>{<br>
-                        <blockquote>"Username" : "Saffron"</blockquote>
-                    }
-                    </p>
-                </td>
+                <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A JSON response with updated User favorite movies or error due to failure:
-                    <p>{<br>
+                    <p>{
                         <blockquote>"_id": "672646c255a517151e82293c",<br>
                             "Username" : "Saffron",<br>
                             "Password" : "(Hashed Password)",<br>
@@ -208,14 +203,9 @@
                 <td class="url-cell center-cell">/movies/favorites/[MovieID]</td>
                 <td class="http-method-cell center-cell">DELETE</td>
                 <td class="req-params-cell"><b>MovieID</b> is the _id field of the movie to be removed the user's list</td>
-                <td class="req-body-cell">A JSON format object holding user credentials like: 
-                    <p>{<br>
-                        <blockquote>"Username" : "Saffron"</blockquote>
-                    }
-                    </p>
-                </td>
+                <td class="req-body-cell center-cell">none</td>
                 <td class="res-body-cell">A JSON response with updated User favorite movies or error due to failure:
-                    <p>{<br>
+                    <p>{
                         <blockquote>"_id": "672646c255a517151e82293c",<br>
                             "Username" : "Saffron",<br>
                             "Password" : "(Hashed Password)",<br>
@@ -234,7 +224,7 @@
                 <td class="http-method-cell center-cell">DELETE</td>
                 <td class="req-params-cell center-cell">none</td>
                 <td class="req-body-cell">
-                    <p>{<br>
+                    <p>{
                         <blockquote>"Username" : "Saffron"</blockquote>
                     }
                     </p>
@@ -247,13 +237,13 @@
                 <td class="url-cell center-cell">/login</td>
                 <td class="http-method-cell center-cell">POST</td>
                 <td class="req-params-cell center-cell">none</td>
-                <td class="req-body-cell">
-                    <p>{<br>
+                <td class="req-body-cell">A JSON object with username and password fields like:
+                    <p>{
                         <blockquote>"Username" : "Saffron" , "Password" : "meow1234!"</blockquote>
                     }
                     </p>
                 </td>
-                <td class="res-body-cell">A JSON response containing the User document as well as JWT token for authentication</td>
+                <td class="res-body-cell">A JSON response containing the User document as well as JWT token for authentication
                 <p>{<br>
                     "user":{
                     <blockquote>"_id": "672646c255a517151e82293c",<br>
@@ -261,13 +251,14 @@
                         "Password" : "(Hashed Password)",<br>
                         "Email" : "risotto@email.com",<br>
                         "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
-                        "FavoriteMovies" : [],
+                        "FavoriteMovies" : [],<br>
                         "__v": 0
                     </blockquote>
                     },<br>
                     "token": "s25df6S6dfA6S4dFa788sD9G9A9Sg5a5wGuHW..."<br>
                 }
                 </p>
+                </td>
             </tr>
         </table>
     </div>

@@ -14,8 +14,11 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-// DB connection to MongoDB
-mongoose.connect('mongodb://localhost:27017/myFlix', {});
+// Connection to MongoDB if using local database
+  //mongoose.connect('mongodb://localhost:27017/myFlix', {});
+
+// Connection to MongoDB if using Atlas database
+mongoose.connect('mongodb+srv://pweaverpsu03:myFlixDBpw@myflixdb.ydo6r.mongodb.net/myFlixDB?retryWrites=true&w=majority&appName=myFlixDB');
 
 // Express middleware:
 app.use(express.urlencoded({ extended: true }));
@@ -44,7 +47,7 @@ app.get('/documentation', (req, res) => {
 });
 
 // Get a list of all movies (titles) ---------------------------------------
-app.get('/movies', passport.authenticate('jwt', {session:false}), async (req, res) => {
+app.get('/movies', async (req, res) => {
     console.log("Request for list of all movies...");
     await Movies.find()
         .then((responseMovies) => {
@@ -66,7 +69,7 @@ app.get('/movies', passport.authenticate('jwt', {session:false}), async (req, re
 });
 
 // Get information about a movie by title ---------------------------------------
-app.get('/movies/:Title', passport.authenticate('jwt', {session:false}), 
+app.get('/movies/:Title', 
   [
     check('Title','Invalid movie title').isAlphanumeric()
   ], async (req, res) => {
@@ -126,7 +129,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', {session:false}),
 });
 
 // Get information about a genre by name ---------------------------------------
-app.get('/genre/:Name', passport.authenticate('jwt', {session:false}), 
+app.get('/genre/:Name', 
   [
     check('Name','Invalid genre name').isAlpha()
   ], async (req, res) => {
@@ -148,7 +151,7 @@ app.get('/genre/:Name', passport.authenticate('jwt', {session:false}),
 });
 
 // Get information about a director by name -------------------------------------
-app.get('/director/:Name', passport.authenticate('jwt', {session:false}), 
+app.get('/director/:Name', 
   [
     check('Name','Invalid director name').isAlpha()
   ], async (req, res) => {
@@ -258,7 +261,7 @@ app.put('/users/:Username',
         return res.status(422).json({errors:validationErrors.array()});
     }
 
-    console.log("Trying to update account information for "+req.params.Username+": "+JSON.stringify(req.body));
+    console.log("Trying to update account information for "+req.user.Username+": "+JSON.stringify(req.body));
 
     let passedChecks = true;
 
@@ -286,7 +289,7 @@ app.put('/users/:Username',
         if(passedChecks){
             console.log('Passed username checks: username matched & new username is available.');
             let hashedPassword = Users.hashPassword(req.body.Password); // fn() hashPassword defined in models.js
-            await Users.findOneAndUpdate({ Username: req.params.Username }, 
+            await Users.findOneAndUpdate({ Username: req.user.Username }, 
                 { $set: {
                     Username: req.body.Username,
                     Password: hashedPassword,
@@ -307,12 +310,6 @@ app.put('/users/:Username',
 
 
 // Add a movie to user's favorites list ---------------------------------------
-
-/* Request body JSON should use this format:
-    {
-        Username: String,   (required)
-    }
-*/
 app.post('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:false}), 
   [
     //Validation for MovieID as alphanumeric
@@ -326,7 +323,7 @@ app.post('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:fal
         return res.status(422).json({errors:validationErrors.array()});
     }
 
-    console.log('Trying to add movie '+req.params.MovieID+' to favorites list for account: '+req.body.Username);
+    console.log('Trying to add movie '+req.params.MovieID+' to favorites list for account: '+req.user.Username);
 
     let passedChecks = true;
 
@@ -340,10 +337,11 @@ app.post('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:fal
         }).catch((err)=>{
             passedChecks = false;
             console.error('Error checking database for movieID '+req.params.movieID+': '+err);
+            return res.status(500).send('Error checking database for movieID '+req.params.movieID+': '+err);
         });
 
     if(passedChecks){
-        await Users.findOneAndUpdate({Username: req.body.Username},
+        await Users.findOneAndUpdate({Username: req.user.Username},
             {$addToSet: {FavoriteMovies: req.params.MovieID}}, //$addToSet: handles if movie is already in list prior to add
             {new:true} //return the new document after update
         ).then((updatedUser) => {
@@ -356,13 +354,6 @@ app.post('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:fal
 });
 
 // Remove a movie from user's favorites list -----------------------------------
-
-/* Request body JSON should use this format:
-    {
-        Username: String,   (required)
-    }
-*/
-
 app.delete('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:false}), 
   [
     //Validation for MovieID as alphanumeric
@@ -376,7 +367,7 @@ app.delete('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:f
         return res.status(422).json({errors:validationErrors.array()});
     }
     
-    console.log('Trying to delete movie '+req.params.MovieID+' from favorites list for account '+req.body.Username);
+    console.log('Trying to delete movie '+req.params.MovieID+' from favorites list for account '+req.user.Username);
 
     let passedChecks = true;
 
@@ -393,9 +384,9 @@ app.delete('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:f
             return res.status(400).send('Error checking database for movieID '+req.params.movieID+': '+err);
         });
 
-    // Check if MovieID is NOT in favorites list???
+
     if(passedChecks){
-        await Users.findOneAndUpdate({Username: req.body.Username, Password: req.body.Password},
+        await Users.findOneAndUpdate({Username: req.user.Username},
             {$pull: {FavoriteMovies: req.params.MovieID}}, //$pull: handles if item is not in the array
             {new:true}
         ).then((updatedUser) => {
@@ -410,24 +401,18 @@ app.delete('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:f
 
 // Deregister a user account --------------------------------------------------
 
-/* Request body JSON should use this format:
-    {
-        Username: String,   (required)
-    }
-*/
-
 app.delete('/users', passport.authenticate('jwt', {session:false}), async (req, res) => {
-    console.log("Trying to deregister user account : "+req.body.Username);
-    await Users.findOneAndDelete({Username: req.body.Username, Password: req.body.Password})
+    console.log("Trying to deregister user account : "+req.user.Username);
+    await Users.findOneAndDelete({Username: req.user.Username, Password: req.user.Password})
         .then((deletedUser) => {
             if(!deletedUser) {
-                res.status(400).send("User "+req.body.Username+" could not be found.");
+                res.status(400).send("User "+req.user.Username+" could not be found.");
             } else {
-                res.status(200).send("DELETE successful : account "+req.body.Username+" has been removed.")
+                res.status(200).send("DELETE successful : account "+req.user.Username+" has been removed.")
             }
         }).catch((err) => {
             console.error(err);
-            res.status(500).send("Failed DELETE - Could not remove account "+req.body.Username+" due to server error: "+err);
+            res.status(500).send("Failed DELETE - Could not remove account "+req.user.Username+" due to server error: "+err);
         });
 });
 
