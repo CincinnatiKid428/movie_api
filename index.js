@@ -30,6 +30,21 @@ app.use(morgan('common', {stream: accessLogStream}));
 
 app.use(bodyParser.json()); // parse request bodies into JSON format
 
+// Use CORS before routing to restrict access to specified domains
+const cors = require('cors');
+
+let allowedOrigins = ['*']; // Allow all domains access to API
+
+app.use(cors({origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
+      let message = 'The CORS policy for this application does not allow access from origin ' + origin;
+      return callback(new Error(message), false);
+    }
+    return callback(null, true);
+  }
+}));
+
 let auth = require('./auth.js')(app);
 const passport = require('passport');
 require('./passport.js');
@@ -424,6 +439,7 @@ app.use((err, req, res, next) => {
 });
 
 
-app.listen(8080, () => {
-    console.log('myFlix Movie API server is up and listening on port 8080...');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0',() => {
+ console.log('myFlix Movie API server is up and listening on port '+port+'...');
 });
