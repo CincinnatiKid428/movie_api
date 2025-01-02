@@ -1,6 +1,6 @@
 /*  -------------Variable Definitions--------------  */
 :root {
-    --debug-border: 1px solid black; /* Change pixel value to see borders for debugging */
+    --debug-border: 0px solid #f00; /* Change pixel value to see borders for debugging */
 }
   
 * {
@@ -10,58 +10,76 @@
 body {
       font-family:Arial, Helvetica, sans-serif;
       font-weight: 400;
-      font-size: 12px;
+      font-size: 14px;
       margin-left: 10px;
 }
 
-.api-table {
-    border: var(--debug-border);
-    padding: 2px;
-}
-
-.description-cell {
-    border: var(--debug-border);
-    width: 15%;
-    padding: 2px;
-    text-wrap: wrap;
-}
-
-.url-cell {
-    border: var(--debug-border);
-    width: 15%;
-    padding: 2px;
-    text-wrap: wrap;
-}
-
-.http-method-cell {
-    border: var(--debug-border);
-    width: 8%;
-    padding: 2px;
-}
-
-.req-params-cell {
-    border: var(--debug-border);
-    width: 15%;
-    padding: 2px;
-}
-
-.req-body-cell {
-    border: var(--debug-border);
-    width: 20%;
-    padding: 2px;
-}
-
-.res-body-cell {
-    border: var(--debug-border);
-    width: 25%;
-    padding: 2px;
-}
-
-.center-cell {
-    text-align: center;
-}
-
-.heading-cell {
-    font-weight:bold;
+.container {
+    border-top: 1px solid #000;
+    border-left: 1px solid #000;
+    border-bottom: 3px solid #000;
+    border-right: 3px solid #000;
+    margin-left: 0px;
     background-color: #d3d3d3;
+}
+
+.heading-block {
+    display:inline-block;
+    width:fit-content;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #96f0c3;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 18px;
+    font-weight:bold;
+}
+
+.subheading-block {
+    display:inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 14px;
+}
+
+.description-block{
+    width:auto;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #fff;
+    font-size: 14px;
+}
+
+.req-params-block{
+    width:auto;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color:#fff;
+    font-size: 14px;
+}
+
+.req-param-list-item{
+    font-weight:bold;
+}
+
+.code-font {
+    font-family: 'Courier New', Courier, monospace;
+    color: #8b0000;
+}
+
+/*Used to create indents for code snippets without spacing before/after.*/
+blockquote { 
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+a, a:visited, a:hover, a:active {
+    color: #008080;
+    text-decoration: none;
+    margin-left: 5px;
 }

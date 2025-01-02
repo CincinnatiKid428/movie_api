@@ -10,7 +10,7 @@
 <body>
     <h1>Movie API Documentation</h1>
     <hr>
-    <h3>Objective</h3>
+    <h2>Objective</h2>
     <p>
         To build the server-side component of a “movies” web application. The web
         application will provide users with access to information about different
@@ -19,249 +19,422 @@
 
     </p>
 
-    <p>
-        <h3>API Endpoints &amp; Descriptions</h3>
-    </p>
+    <hr>
+    <h2 id="toc">Table of Contents:</h2>
+    <ul>
+        <li><a href="#example">Example API Format</a></li>
+        <li><a href="#register">Register a User</a></li>
+        <li><a href="#login">User Login</a></li>
+        <li><a href="#update">Update Account Information</a></li>
+        <li><a href="#getAllMovies">Get List of All Movie Titles</a></li>
+        <li><a href="#getOneMovie">Get Information on Movie by Title</a></li>
+        <li><a href="#getGenre">Get Information on Genre by Name</a></li>
+        <li><a href="#getDirector">Get Information on Director by Name</a></li>
+        <li><a href="#addFav">Add Movie to Favorites List</a></li>
+        <li><a href="#removeFav">Remove Movie from Favorites List</a></li>
+        <li><a href="#deregister">Deregister a User Account</a></li>
+    </ul>
+    <br>
+    <hr>
+    <h2>API Endpoints Format Example:</h2>
 
-    <div>
-        <table class="api-table">
-            <tr>
-                <td class="heading-cell description-cell center-cell">Description</td>
-                <td class="heading-cell url-cell center-cell">URL</td>
-                <td class="heading-cell http-method-cell center-cell">HTTP Method</td>
-                <td class="heading-cell req-params-cell center-cell">Query Parameters</td>
-                <td class="heading-cell req-body-cell center-cell">Request Body Format</td>
-                <td class="heading-cell res-body-cell center-cell">Response Body Format</td>
-            </tr>
+<!--------------------------Example API format-------------------------->
+    <br>
+    <div class="container" id="example">
+        <div class="heading-block">HTTP METHOD</div>
+        <div class="subheading-block">/folderName/[Parameter]</div>
+        <div class="description-block">A description of the API call functionality.</div>
 
-            <tr>
-                <td class="description-cell">Returns a list of ALL movie titles</td>
-                <td class="url-cell center-cell">/movies</td>
-                <td class="http-method-cell center-cell">GET</td>
-                <td class="req-params-cell center-cell">none</td>
-                <td class="req-body-cell center-cell">none</td>
-                <td class="res-body-cell">A JSON format response containing an array of movie titles like:
-                    <p>
-                    {
-                        "movies" : [<br>
-                            <blockquote>"Stand by Me",<br>
-                            "The Shawshank Redemption",<br>
-                            "Indiana Jones: Raiders of the Lost Ark",<br>
-                            "Dune",<br>
-                            "Fight Club",<br>
-                            "Donnie Darko",<br>
-                            "Ghostbusters",<br>
-                            "Halloween",<br>
-                            "The Matrix",<br>
-                            "Primer"<br>
-                        ]</blockquote>
-                    }
-                    </p>
-                </td>
-            </tr>
+        <div class="heading-block">Request Parameters</div>
+        <div class="req-params-block">
+            <span class="req-param-list-item">Parameter1</span> : Description of Parameter1<br>
+            <span class="req-param-list-item">Parameter2</span> : Description of Parameter2<br>
+            <span class="req-param-list-item">...</span>
+            <span class="req-param-list-item">ParameterN</span> : Description of ParameterN<br>
+        </div>
 
-            <tr>
-                <td class="description-cell">Returns data (description, genre, director, image URL, whether it is featured or not) about a single movie by Title</td>
-                <td class="url-cell center-cell">/movies/[Title]</td>
-                <td class="http-method-cell center-cell">GET</td>
-                <td class="req-params-cell"><b>Title</b> is the Title of the movie the user is looking for information about</td>
-                <td class="req-body-cell center-cell">none</td>
-                <td class="res-body-cell">A JSON format response containing information about a single movie like:
-                    <p>
-                        {
-                        <blockquote>"Title" : "Stand by Me",<br>
-                                "ReleaseYear : "1986",<br>
-                                "Rating" : "8.1",<br>
-                                "Description" : "A plot summary.",<br>
-                                "Director" : "Rob Reiner",<br>
-                                "Genre" : "Drama",<br>
-                                "Actors" : ["Wil Wheaton", "River Phoenix", "Corey Feldman", "Keifer Sutherland"],<br>
-                                "ImageURL" : "https://someplace.com/stand-by-me.jpg",<br>
-                                "Featured" : "true"<br>
-                        </blockquote>
-                        }
-                        </p>
-                </td>
-            </tr>
+        <div class="heading-block">Request Body Format</div>
+        <div class="subheading-block">JSON</div>
+        <div class="description-block">Description of the request body:</div>
+        <div class="description-block code-font">
+            {
+                <blockquote>
+                    "Field1" : "Value1",<br>
+                    "Field2" : "Value2",<br>
+                    ...
+                </blockquote>
+            }
+        </div>
 
-            <tr>
-                <td class="description-cell">Returns data about a genre (description) by name/Title (e.g., "Thriller")</td>
-                <td class="url-cell center-cell">/genre/[Name]</td>
-                <td class="http-method-cell center-cell">GET</td>
-                <td class="req-params-cell"><b>Name</b> is the name of the genre the user is looking for information about</td>
-                <td class="req-body-cell center-cell">none</td>
-                <td class="res-body-cell">A text message description of the genre in the requst parameters
-                    <p>{
-                        <blockquote>"Name" : "Drama",<br>
-                            "Description" : "The drama genre is characterized by..."
-                        </blockquote>
-                    }
-                    </p>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="description-cell">Returns data about a director (bio, birth/death year, movies) by name</td>
-                <td class="url-cell center-cell">/director/[Name]</td>
-                <td class="http-method-cell center-cell">GET</td>
-                <td class="req-params-cell"><b>Name</b> is the name of the director to look up information</td>
-                <td class="req-body-cell center-cell">none</td>
-                <td class="res-body-cell">A JSON format object holding data about the director like:
-                    <p>
-                        {
-                            <blockquote>"Name" : "Rob Reiner",<br>
-                                "Bio" : "A short biography."<br>
-                                "BirthYear" : "1947",<br>
-                                "DeathYear" : "",<br>
-                                "Movies" : ["Stand by Me", "When Harry Met Sally", "Misery", "A Few Good Men"]
-                            </blockquote>
-                        }
-                    </p>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="description-cell">Register a new user with username/password as user's chosen credentials</td>
-                <td class="url-cell center-cell">/users</td>
-                <td class="http-method-cell center-cell">POST</td>
-                <td class="req-params-cell center-cell">none</td>
-                <td class="req-body-cell">A JSON object holding the desired information to register a new account like:
-                    <p>{<br>
-                        <blockquote>"Username" : "Saffron",<br>
-                            "Password" : "meow1234!",<br>
-                            "Email" : "risotto@email.com",<br>
-                            "Birthdate" : "2022/10/31"
-                        </blockquote>
-                    }
-                    </p>
-                </td>
-                <td class="res-body-cell">A JSON object holding the new account information or error message if creation failed:
-                    <p>{
-                        <blockquote>"_id": "672646c255a517151e82293c",<br>
-                            "Username" : "Saffron",<br>
-                            "Password" : "(Hashed Password)",<br>
-                            "Email" : "risotto@email.com",<br>
-                            "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
-                            "FavoriteMovies" : []
-                        </blockquote>
-                    }
-                    </p>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="description-cell">Updates an exisiting user's account information. </td>
-                <td class="url-cell center-cell">/users/[Username]</td>
-                <td class="http-method-cell center-cell">PUT</td>
-                <td class="req-params-cell"><b>Username</b> is the account Username to receive updated information in request body.</td>
-                <td class="req-body-cell">A JSON object with account information to be updated.
-                    <p>{<br>
-                        <blockquote>"Username" : "Fred09",<br>
-                            "Password" : "abc555!",<br>
-                            "Email" : "fred09@email.com",<br>
-                            "Birthdate" : "1978/05/26"
-                        </blockquote>
-                        }
-                    </p>
-                </td>
-                <td class="res-body-cell">A JSON object holding the updated account information or message of failure to update:
-                    <p>{
-                        <blockquote>"_id": "672646c255a517151e82293c",<br>
-                            "Username" : "Fred09",<br>
-                            "Password" : "(Hashed Password)",<br>
-                            "Email" : "fred09@email.com",<br>
-                            "Birthdate" : "ISODate('1978-05-26T04:00:00.000Z')",<br>
-                            "FavoriteMovies" : []
-                        </blockquote>
-                    }
-                    </p>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="description-cell">Adds a movie by MovieID to a favorites list</td>
-                <td class="url-cell center-cell">/movies/favorites/[MovieID]</td>
-                <td class="http-method-cell center-cell">POST</td>
-                <td class="req-params-cell"><b>MovieID</b> is the _id field of the movie to be added to the user's list</td>
-                <td class="req-body-cell center-cell">none</td>
-                <td class="res-body-cell">A JSON response with updated User favorite movies or error due to failure:
-                    <p>{
-                        <blockquote>"_id": "672646c255a517151e82293c",<br>
-                            "Username" : "Saffron",<br>
-                            "Password" : "(Hashed Password)",<br>
-                            "Email" : "risotto@email.com",<br>
-                            "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
-                            "FavoriteMovies" : ["671ebe39577ed8cab386b022"]
-                        </blockquote>
-                    }
-                    </p>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="description-cell">Removes a movie by MovieID from a favorites list</td>
-                <td class="url-cell center-cell">/movies/favorites/[MovieID]</td>
-                <td class="http-method-cell center-cell">DELETE</td>
-                <td class="req-params-cell"><b>MovieID</b> is the _id field of the movie to be removed the user's list</td>
-                <td class="req-body-cell center-cell">none</td>
-                <td class="res-body-cell">A JSON response with updated User favorite movies or error due to failure:
-                    <p>{
-                        <blockquote>"_id": "672646c255a517151e82293c",<br>
-                            "Username" : "Saffron",<br>
-                            "Password" : "(Hashed Password)",<br>
-                            "Email" : "risotto@email.com",<br>
-                            "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
-                            "FavoriteMovies" : []
-                        </blockquote>
-                    }
-                    </p>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="description-cell">Deregisters a user given valid credentials</td>
-                <td class="url-cell center-cell">/users</td>
-                <td class="http-method-cell center-cell">DELETE</td>
-                <td class="req-params-cell center-cell">none</td>
-                <td class="req-body-cell">
-                    <p>{
-                        <blockquote>"Username" : "Saffron"</blockquote>
-                    }
-                    </p>
-                </td>
-                <td class="res-body-cell">A text response confirming success/failure of deregister operation</td>
-            </tr>
-
-            <tr>
-                <td class="description-cell">User login</td>
-                <td class="url-cell center-cell">/login</td>
-                <td class="http-method-cell center-cell">POST</td>
-                <td class="req-params-cell center-cell">none</td>
-                <td class="req-body-cell">A JSON object with username and password fields like:
-                    <p>{
-                        <blockquote>"Username" : "Saffron" , "Password" : "meow1234!"</blockquote>
-                    }
-                    </p>
-                </td>
-                <td class="res-body-cell">A JSON response containing the User document as well as JWT token for authentication
-                <p>{<br>
-                    "user":{
-                    <blockquote>"_id": "672646c255a517151e82293c",<br>
-                        "Username" : "Saffron",<br>
-                        "Password" : "(Hashed Password)",<br>
-                        "Email" : "risotto@email.com",<br>
-                        "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
-                        "FavoriteMovies" : [],<br>
-                        "__v": 0
-                    </blockquote>
-                    },<br>
-                    "token": "s25df6S6dfA6S4dFa788sD9G9A9Sg5a5wGuHW..."<br>
-                }
-                </p>
-                </td>
-            </tr>
-        </table>
+        <div class="heading-block">Response Body Format</div>
+        <div class="subheading-block">JSON/Text</div>
+        <div class="description-block">Description of the response body:</div>
+        <div class="description-block code-font">
+            {
+                <blockquote>
+                    "Field1" : "Value1",<br>
+                    "Field2" : "Value2",<br>
+                    ...
+                </blockquote>
+            }
+        </div>
+        <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
     </div>
 
+    <br>
+    <hr>
+    <h2>API Endpoints &amp; Descriptions</h2>
+    <!--------------------------Register a new user section-------------------------->
+    <br>
+    <div class="container" id="register">
+        <div class="heading-block">HTTP POST</div>
+        <div class="subheading-block">/users</div>
+        <div class="description-block">Registers a new user account with their desired username/password (if available), email and birthdate.</div>
+
+        <div class="heading-block">Request Parameters</div>
+        <div class="req-params-block">None</div>
+
+        <div class="heading-block">Request Body Format</div>
+        <div class="subheading-block">JSON</div>
+        <div class="description-block">JSON object holding the desired information to register a new account:</div>
+        <div class="description-block code-font">
+            {<br>
+                <blockquote>"Username" : "Saffron",<br>
+                    "Password" : "meow1234!",<br>
+                    "Email" : "risotto@email.com",<br>
+                    "Birthdate" : "2022/10/31"
+                </blockquote>
+            }
+        </div>
+
+        <div class="heading-block">Response Body Format</div>
+        <div class="subheading-block">JSON/Text</div>
+        <div class="description-block">JSON object holding the new account information or error message if creation failed:</div>
+        <div class="description-block code-font">
+            {
+                <blockquote>"_id": "672646c255a517151e82293c",<br>
+                    "Username" : "Saffron",<br>
+                    "Password" : "(Hashed Password)",<br>
+                    "Email" : "risotto@email.com",<br>
+                    "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
+                    "FavoriteMovies" : []
+                </blockquote>
+            }
+        </div>
+        <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
+    </div>
+
+    <!--------------------------User login section-------------------------->
+    <br><br>
+    <div class="container" id="login">
+        <div class="heading-block">HTTP POST</div>
+        <div class="subheading-block">/login</div>
+        <div class="description-block">Allows a registered user to login to access the user's account.</div>
+
+        <div class="heading-block">Request Parameters</div>
+        <div class="req-params-block">None</div>
+
+        <div class="heading-block">Request Body Format</div>
+        <div class="subheading-block">JSON</div>
+        <div class="description-block">JSON object with <span class="code-font">Username</span> and <span class="code-font">Password</span> fields:</div>
+        <div class="description-block code-font">
+            {
+                <blockquote>"Username" : "Saffron" , "Password" : "meow1234!"</blockquote>
+            }
+        </div>
+
+        <div class="heading-block">Response Body Format</div>
+        <div class="subheading-block">JSON/Text</div>
+        <div class="description-block">A JSON response containing the User document as well as JWT token for authentication or text error message:</div>
+        <div class="description-block code-font">
+            {<br>
+                "user":{
+                <blockquote>"_id": "672646c255a517151e82293c",<br>
+                    "Username" : "Saffron",<br>
+                    "Password" : "(Hashed Password)",<br>
+                    "Email" : "risotto@email.com",<br>
+                    "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
+                    "FavoriteMovies" : [],<br>
+                    "__v": 0
+                </blockquote>
+                },<br>
+                "token": "s25df6S6dfA6S4dFa788sD9G9A9Sg5a5wGuHW..."<br>
+            }
+        </div>
+        <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
+    </div>
+
+<!--------------------------Update account information-------------------------->
+<br><br>
+<div class="container" id="update">
+    <div class="heading-block">HTTP PUT</div>
+    <div class="subheading-block">/users/[Username]</div>
+    <div class="description-block">Updates an exisiting user's account information.</div>
+
+    <div class="heading-block">Request Parameters</div>
+    <div class="req-params-block">
+        <span class="req-param-list-item">Username</span> : The account with <span class="code-font">Username</span> to receive the update.
+    </div>
+
+    <div class="heading-block">Request Body Format</div>
+    <div class="subheading-block">JSON</div>
+    <div class="description-block">A JSON object with account information to be updated--<u>ALL</u> information is required and will overwrite current account info:</div>
+    <div class="description-block code-font">
+        {
+            <blockquote>"Username" : "Fred09",<br>
+                "Password" : "abc555!",<br>
+                "Email" : "fred09@email.com",<br>
+                "Birthdate" : "1978/05/26"
+            </blockquote>
+            }
+    </div>
+
+    <div class="heading-block">Response Body Format</div>
+    <div class="subheading-block">JSON/Text</div>
+    <div class="description-block">JSON object holding the updated account information or message of failure to update:</div>
+    <div class="description-block code-font">
+        {
+            <blockquote>"_id": "672646c255a517151e82293c",<br>
+                "Username" : "Fred09",<br>
+                "Password" : "(Hashed Password)",<br>
+                "Email" : "fred09@email.com",<br>
+                "Birthdate" : "ISODate('1978-05-26T04:00:00.000Z')",<br>
+                "FavoriteMovies" : []
+            </blockquote>
+        }
+    </div>
+    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
+</div>
+
+<!--------------------------Get listing of all movies-------------------------->
+<br><br>
+<div class="container" id="getAllMovies">
+    <div class="heading-block">HTTP GET</div>
+    <div class="subheading-block">/movies</div>
+    <div class="description-block">Returns a list of ALL movie titles.</div>
+
+    <div class="heading-block">Request Parameters</div>
+    <div class="req-params-block">None</div>
+
+    <div class="heading-block">Request Body Format</div>
+    <div class="subheading-block">N/A</div>
+    <div class="description-block">No request body.</div>
+
+    <div class="heading-block">Response Body Format</div>
+    <div class="subheading-block">JSON/Text</div>
+    <div class="description-block">JSON format response containing an array of movie titles or failure message retreiving list:</div>
+    <div class="description-block code-font">
+        {<br>
+            "movies" : [
+                <blockquote>
+                    "Stand by Me",<br>
+                    "The Shawshank Redemption",<br>
+                    "Indiana Jones: Raiders of the Lost Ark",<br>
+                    "Dune",<br>
+                    "Fight Club",<br>
+                    "Donnie Darko",<br>
+                    "Ghostbusters",<br>
+                    "Halloween",<br>
+                    "The Matrix",<br>
+                    "Primer"<br>
+                ]</blockquote>
+        }
+    </div>
+    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
+</div>
+
+<!--------------------------Get info on movie by Title-------------------------->
+<br><br>
+<div class="container" id="getOneMovie">
+    <div class="heading-block">HTTP GET</div>
+    <div class="subheading-block">/movies/[Title]</div>
+    <div class="description-block">Returns the following data about a movie title: release year, rating, description, director, genre, actors, image URL and whether it is featured.</div>
+
+    <div class="heading-block">Request Parameters</div>
+    <div class="req-params-block">
+        <span class="req-param-list-item">Title</span> : The <span class="code-font">Title</span> field of the movie the user is looking for information about.
+    </div>
+
+    <div class="heading-block">Request Body Format</div>
+    <div class="subheading-block">N/A</div>
+    <div class="description-block">No request body.</div>
+
+    <div class="heading-block">Response Body Format</div>
+    <div class="subheading-block">JSON/Text</div>
+    <div class="description-block">JSON format response containing information about a single movie or failure message:</div>
+    <div class="description-block code-font">
+        {
+            <blockquote>
+                "Title" : "Stand by Me",<br>
+                "ReleaseYear : "1986",<br>
+                "Rating" : "8.1",<br>
+                "Description" : "A plot summary.",<br>
+                "Director" : "Rob Reiner",<br>
+                "Genre" : "Drama",<br>
+                "Actors" : ["Wil Wheaton", "River Phoenix", "Corey Feldman", "Keifer Sutherland"],<br>
+                "ImageURL" : "https://someplace.com/stand-by-me.jpg",<br>
+                "Featured" : "true"
+            </blockquote>
+            }
+    </div>
+    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
+</div>
+
+<!--------------------------Get info about genre by Name-------------------------->
+<br><br>
+<div class="container" id="getGenre">
+    <div class="heading-block">HTTP GET</div>
+    <div class="subheading-block">/genre/[Name]</div>
+    <div class="description-block">Returns data about a genre (description) by name (e.g., "Thriller").</div>
+
+    <div class="heading-block">Request Parameters</div>
+    <div class="req-params-block">
+        <span class="req-param-list-item">Name</span> : The <span class="code-font">Name</span> field of the genre the user is looking for information about.
+    </div>
+
+    <div class="heading-block">Request Body Format</div>
+    <div class="subheading-block">N/A</div>
+    <div class="description-block">No request body.</div>
+
+    <div class="heading-block">Response Body Format</div>
+    <div class="subheading-block">JSON/Text</div>
+    <div class="description-block">JSON format response containing the description of the genre or failure message:</div>
+    <div class="description-block code-font">
+        {
+            <blockquote>
+                "Name" : "Drama",<br>
+                "Description" : "The drama genre is characterized by..."
+            </blockquote>
+        }
+    </div>
+    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
+</div>
+
+<!--------------------------Get info about director by Name-------------------------->
+<br><br>
+<div class="container" id="getDirector">
+    <div class="heading-block">HTTP GET</div>
+    <div class="subheading-block">/director/[Name]</div>
+    <div class="description-block">Returns data about a director (bio, birth/death year, movies) by name.</div>
+
+    <div class="heading-block">Request Parameters</div>
+    <div class="req-params-block">
+        <span class="req-param-list-item">Name</span> : The <span class="code-font">Name</span> field of the director the user is looking for information about.
+    </div>
+
+    <div class="heading-block">Request Body Format</div>
+    <div class="subheading-block">N/A</div>
+    <div class="description-block">No request body.</div>
+
+    <div class="heading-block">Response Body Format</div>
+    <div class="subheading-block">JSON/Text</div>
+    <div class="description-block">JSON format object holding data about the director or failure message:</div>
+    <div class="description-block code-font">
+        {
+            <blockquote>
+                "Name" : "Rob Reiner",<br>
+                "Bio" : "A short biography."<br>
+                "BirthYear" : "1947",<br>
+                "DeathYear" : "",<br>
+                "Movies" : ["Stand by Me", "When Harry Met Sally", "Misery", "A Few Good Men"]
+            </blockquote>
+        }
+    </div>
+    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
+</div>
+
+<!--------------------------Add a movie to favorites list-------------------------->
+<br><br>
+<div class="container" id="addFav">
+    <div class="heading-block">HTTP POST</div>
+    <div class="subheading-block">/movies/favorites/[MovieID]</div>
+    <div class="description-block">Adds a movie by MovieID to a user's favorites list.</div>
+
+    <div class="heading-block">Request Parameters</div>
+    <div class="req-params-block">
+        <span class="req-param-list-item">MovieID</span> : The <span class="code-font">_id</span> field of the movie to be added to the user's list.
+    </div>
+
+    <div class="heading-block">Request Body Format</div>
+    <div class="subheading-block">N/A</div>
+    <div class="description-block">No request body.</div>
+
+    <div class="heading-block">Response Body Format</div>
+    <div class="subheading-block">JSON/Text</div>
+    <div class="description-block">JSON response with updated User favorite movies or error due to failure:</div>
+    <div class="description-block code-font">
+        {
+            <blockquote>"_id": "672646c255a517151e82293c",<br>
+                "Username" : "Saffron",<br>
+                "Password" : "(Hashed Password)",<br>
+                "Email" : "risotto@email.com",<br>
+                "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
+                "FavoriteMovies" : ["671ebe39577ed8cab386b022"]
+            </blockquote>
+        }
+    </div>
+    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
+</div>
+
+<!--------------------------Remove a movie from favorites list-------------------------->
+<br><br>
+<div class="container" id="removeFav">
+    <div class="heading-block">HTTP DELETE</div>
+    <div class="subheading-block">/movies/favorites/[MovieID]</div>
+    <div class="description-block">Removes a movie by MovieID from a user's favorites list.</div>
+
+    <div class="heading-block">Request Parameters</div>
+    <div class="req-params-block">
+        <span class="req-param-list-item">MovieID</span> : The <span class="code-font">_id</span> field of the movie to be removed from the user's list.
+    </div>
+
+    <div class="heading-block">Request Body Format</div>
+    <div class="subheading-block">N/A</div>
+    <div class="description-block">No request body.</div>
+
+    <div class="heading-block">Response Body Format</div>
+    <div class="subheading-block">JSON/Text</div>
+    <div class="description-block">JSON response with updated User favorite movies or error due to failure:</div>
+    <div class="description-block code-font">
+        {
+            <blockquote>
+                "_id": "672646c255a517151e82293c",<br>
+                "Username" : "Saffron",<br>
+                "Password" : "(Hashed Password)",<br>
+                "Email" : "risotto@email.com",<br>
+                "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
+                "FavoriteMovies" : []
+            </blockquote>
+        }
+    </div>
+    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
+</div>
+
+<!--------------------------Deregister user account-------------------------->
+<br><br>
+<div class="container" id="deregister">
+    <div class="heading-block">HTTP DELETE</div>
+    <div class="subheading-block">/users</div>
+    <div class="description-block">Deregisters a user account.</div>
+
+    <div class="heading-block">Request Parameters</div>
+    <div class="req-params-block">None</div>
+
+    <div class="heading-block">Request Body Format</div>
+    <div class="subheading-block">JSON</div>
+    <div class="description-block">JSON object with account <span class="code-font">Username</span> field to be removed:</div>
+    <div class="description-block code-font">
+        {
+            <blockquote>"Username" : "Saffron"</blockquote>
+        }
+    </div>
+
+    <div class="heading-block">Response Body Format</div>
+    <div class="subheading-block">Text</div>
+    <div class="description-block">A text response confirming success/failure of deregister operation.</div>
+    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
+</div>
+
+<!-- End of the new API html document format ----------------------------------------------------->
 </body>
 </html>
