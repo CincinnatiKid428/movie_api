@@ -438,8 +438,17 @@ app.use((err, req, res, next) => {
     res.status(500).send('The application encountered an error, please try again.');
 });
 
-
-const port = process.env.PORT || 8080;
-app.listen(port, '0.0.0.0',() => {
- console.log('myFlix Movie API server is up and listening on port '+port+'...');
-});
+//Check if this is running in a Vercel environment
+if(process.env.VERCEL){
+    console.log('myFlix movie API server is running in Vercel environment...');
+    /* Vercel is a serverless environment and doesn't use traditional ports
+        and ports are handled by the platform. The server does not need to
+        be started and only needs the express app exported. */
+    module.exports = app;
+} else {
+    const port = process.env.PORT || 3000;
+    // Locally the server will need to be started
+    app.listen(port, '0.0.0.0',() => {
+        console.log('myFlix Movie API server is up and listening on port '+port+'...');
+    });
+}
