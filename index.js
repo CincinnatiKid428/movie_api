@@ -18,7 +18,7 @@ const Users = Models.User;
   //mongoose.connect('mongodb://localhost:27017/myFlix', {});
 
 // Connection to MongoDB if using Atlas database
-mongoose.connect('mongodb+srv://pweaverpsu03:myFlixDBpw@myflixdb.ydo6r.mongodb.net/myFlixDB?retryWrites=true&w=majority&appName=myFlixDB');
+mongoose.connect(process.env.DB_CONNECTION_URI);
 
 // Express middleware:
 app.use(express.urlencoded({ extended: true }));
