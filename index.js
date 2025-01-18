@@ -3,6 +3,7 @@ const app = express();
 
 const {check, validationResult} = require('express-validator');
 const validator = require('validator'); //used for date validation
+const {checkValidationResults} = require('./util.js');
 
 const fs = require('fs'); 
 const path = require('path');
@@ -49,15 +50,15 @@ let auth = require('./auth.js')(app);
 const passport = require('passport');
 require('./passport.js');
 
-
-
 // Requests & handling -----------------------------------------------------
+
 app.get('/', (req, res) => {
     res.status(200).send('This will be the homepage for my API!');
 });
 
+// Static HTML Page for API Documentation
 app.get('/documentation', (req, res) => {
-    console.log('The sending file for /documentation request path: '+ path.join(__dirname, 'public', 'documentation.html'));
+    console.log('Sending file for /documentation request path: '+ path.join(__dirname, 'public', 'documentation.html'));
     res.sendFile(path.join(__dirname, 'public', 'documentation.html'));
 });
 
@@ -86,11 +87,8 @@ app.get('/movies/:Title',
   ], async (req, res) => {
 
     //Check validation on movie title
-    let validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()){
-        console.error('Validation error with movie title parameter: '+req.params.Title);
-        console.error(validationErrors);
-        return res.status(500).send('Failed GET - Validation error with movie title parameter: '+validationErrors);
+    if(!checkValidationResults(validationResult(req), res)){
+        return; //Response sent back to client by checkValidationResults
     }
 
     try {
@@ -126,11 +124,8 @@ app.get('/genre/:Name',
   ], async (req, res) => {
 
     //Check validation on director name
-    let validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()){
-        console.error('Validation error with genre name parameter: '+req.params.Name);
-        console.error(validationErrors);
-        return res.status(500).send('Failed GET - Validation error with movie title parameter: '+validationErrors);
+    if(!checkValidationResults(validationResult(req), res)){
+        return; //Response sent back to client by checkValidationResults
     }
 
     try {
@@ -152,10 +147,8 @@ app.get('/director/:Name',
   ], async (req, res) => {
 
     //Check validation on director name
-    let validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()){
-        console.error('Validation error with director name parameter: '+req.params.Name);
-        console.error(validationErrors);
+    if(!checkValidationResults(validationResult(req), res)){
+        return; //Response sent back to client by checkValidationResults
     }
 
     try {
@@ -193,11 +186,14 @@ app.post('/users',
   async (req, res) => {
     
     //Check for validation errors before registering new user
-    let validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()){
-        console.error('User input validation falied: '+validationErrors);
-        console.error(validationErrors);
-        return res.status(422).json({errors:validationErrors.array()});
+    if(!checkValidationResults(validationResult(req), res)){
+        return; //Response sent back to client by checkValidationResults
+    }
+
+    //Birthdate validation for proper date format, validator.isDate() defaults to yyyy/mm/dd
+    let dateValue = req.body.Birthdate;
+    if(!validator.isDate(dateValue)) {
+        dateValue = '';
     }
 
     try {
@@ -211,12 +207,6 @@ app.post('/users',
         } else {
             let hashedPassword = Users.hashPassword(req.body.Password); // fn() hashPassword defined in models.js
             
-            //Birthdate validation for proper date format, validator.isDate() defaults to yyyy/mm/dd
-            let dateValue = req.body.Birthdate;
-            if(!validator.isDate(dateValue)) {
-                dateValue = '';
-            }
-
             //Create the new account
             const newUser = await Users.create({
                 Username: req.body.Username,
@@ -257,27 +247,25 @@ app.put('/users/:Username',
   ], async (req, res) => {
 
     //Check for validation errors before updating account info
-    let validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()){
-        console.log('Failed PUT: User input validation falied: '+validationErrors);
-        return res.status(422).json({errors:validationErrors.array()});
+    if(!checkValidationResults(validationResult(req), res)){
+        return; //Response sent back to client by checkValidationResults
     }
 
     //Check to see if Username to update matches the info in token:
     if(req.params.Username !== req.user.Username){
-        return res.status(400).send('Permission denied');
+        return res.status(401).send('Permission denied');
     }
-
-    //If all checks passed, then update account info
-    console.log("PUT: Trying to update account information for "+req.user.Username+": "+JSON.stringify(req.body));
-
-    let hashedPassword = Users.hashPassword(req.body.Password); // fn() hashPassword defined in models.js
 
     //Birthdate validation for proper date format, validator.isDate() defaults to yyyy/mm/dd
     let dateValue = req.body.Birthdate;
     if(!validator.isDate(dateValue)) {
         dateValue = '';
     }
+
+    //If all checks passed, then update account info
+    console.log("PUT: Trying to update account information for "+req.user.Username+": "+JSON.stringify(req.body));
+
+    let hashedPassword = Users.hashPassword(req.body.Password); // fn() hashPassword defined in models.js
 
     try {
         const updatedUser = await Users.findOneAndUpdate({ Username: req.user.Username }, 
@@ -306,16 +294,13 @@ app.post('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:fal
   ], async (req, res) => {
     
     //Check for input validation errors with MovieID prior to attempting to add the movie to favorites list
-    let validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()){
-        console.error('POST: Movie ID validation falied: ');
-        console.error(validationErrors);
-        return res.status(422).send('POST: Movie ID validation falied: '+validationErrors);
+    if(!checkValidationResults(validationResult(req), res)){
+        return; //Response sent back to client by checkValidationResults
     }
 
     console.log('POST: Verifying MovieID '+req.params.MovieID+' is in the database');
 
-    // Verify MovieID in the database
+    // Verify MovieID is in the database
     try {
         const movie = await Movies.findOne({_id:req.params.MovieID});
         if(!movie){
@@ -350,11 +335,8 @@ app.delete('/movies/favorites/:MovieID', passport.authenticate('jwt', {session:f
   ], async (req, res) => {
     
     //Check for input validation errors with MovieID prior to attempting to delete the movie from favorites list
-    let validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()){
-        console.error('DELETE: Movie ID validation falied: ');
-        console.error(validationErrors);
-        return res.status(422).send('DELETE: Movie ID validation falied: '+validationErrors);
+    if(!checkValidationResults(validationResult(req), res)){
+        return; //Response sent back to client by checkValidationResults
     }
 
     // No need to verify if MovieID is in the database, only need to check favorite list elements
