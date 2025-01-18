@@ -89,7 +89,7 @@
     <div class="container" id="register">
         <div class="heading-block">HTTP POST</div>
         <div class="subheading-block">/users</div>
-        <div class="description-block">Registers a new user account with their desired username/password (if available), email and birthdate.</div>
+        <div class="description-block">Registers a new user account with their desired username (if available), password, email and birthdate (optional).</div>
 
         <div class="heading-block">Request Parameters</div>
         <div class="req-params-block">None</div>
@@ -102,7 +102,7 @@
                 <blockquote>"Username" : "Saffron",<br>
                     "Password" : "meow1234!",<br>
                     "Email" : "risotto@email.com",<br>
-                    "Birthdate" : "2022/10/31"
+                    "Birthdate" : "2022/10/31" <span style="font-family:Arial, Helvetica, sans-serif;color:#000;">(optional)</span>
                 </blockquote>
             }
         </div>
@@ -210,7 +210,7 @@
 <div class="container" id="getAllMovies">
     <div class="heading-block">HTTP GET</div>
     <div class="subheading-block">/movies</div>
-    <div class="description-block">Returns a list of ALL movie titles.</div>
+    <div class="description-block">Returns a list of ALL movie data, including embedded documents.</div>
 
     <div class="heading-block">Request Parameters</div>
     <div class="req-params-block">None</div>
@@ -221,22 +221,46 @@
 
     <div class="heading-block">Response Body Format</div>
     <div class="subheading-block">JSON/Text</div>
-    <div class="description-block">JSON format response containing an array of movie titles or failure message retreiving list:</div>
+    <div class="description-block">JSON format response containing movie data for each movie (data example for one movie seen below) or failure message retreiving list:</div>
     <div class="description-block code-font">
-        {<br>
-            "movies" : [
+        {<blockquote>
+            "Genre" {
                 <blockquote>
-                    "Stand by Me",<br>
-                    "The Shawshank Redemption",<br>
-                    "Indiana Jones: Raiders of the Lost Ark",<br>
-                    "Dune",<br>
-                    "Fight Club",<br>
-                    "Donnie Darko",<br>
-                    "Ghostbusters",<br>
+                "Name" : "Horror",<br>
+                "Description" : "The horror genre features stories that aim to elicit fear, suspense, and a sense of dread in its audience. Horror stories often explore themes related to the unknown, the supernatural, and the macabre, and they frequently evoke strong emotional reactions such as anxiety, terror, and unease."
+                </blockquote>
+            },<br>
+            "Director": {
+                <blockquote>
+                "Name": "John Carpenter",<br>
+                "Bio": "This is the biography of John Carpenter...",<br>
+                "BirthYear": "1948",<br>
+                "DeathYear": null,<br>
+                "Movies": [
+                    <blockquote>
                     "Halloween",<br>
-                    "The Matrix",<br>
-                    "Primer"<br>
-                ]</blockquote>
+                    "The Fog",<br>
+                    "The Thing",<br>
+                    "Escape from New York"
+                    </blockquote>
+                ]
+                </blockquote>
+            },<br>
+            "_id": "671eb218577ed8cab386b01f",<br>
+            "Title": "Halloween",<br>
+            "ReleaseYear": "1978",<br>
+            "Rating": "7.7",<br>
+            "Description": "Fifteen years after murdering his sister on Halloween night 1963, Michael Myers escapes from a mental hospital and returns to the small town of Haddonfield, Illinois, to kill again.",<br>
+            "Actors": [
+                <blockquote>
+                "Donald Pleasence",<br>
+                "Jamie Lee Curtis",<br>
+                "Tony Moran"
+                </blockquote>
+            ],<br>
+            "ImageURL": "https://www.imageURL.com/movie-image.jpg",<br>
+            "Featured": true
+            </blockquote>
         }
     </div>
     <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
@@ -247,7 +271,7 @@
 <div class="container" id="getOneMovie">
     <div class="heading-block">HTTP GET</div>
     <div class="subheading-block">/movies/[Title]</div>
-    <div class="description-block">Returns the following data about a movie title: release year, rating, description, director, genre, actors, image URL and whether it is featured.</div>
+    <div class="description-block">Returns the following data about a movie title: release year, rating, description, director, genre, actors, image URL and whether it is featured (does not include embedded documents).</div>
 
     <div class="heading-block">Request Parameters</div>
     <div class="req-params-block">
