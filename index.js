@@ -53,7 +53,7 @@ app.get('/documentation', (req, res) => {
 });
 
 // Get a list of all movies with information ---------------------------------------
-app.get('/movies', async (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
 
     try {
         console.log("GET: Request for list of all movies...");
@@ -71,7 +71,7 @@ app.get('/movies', async (req, res) => {
 });
 
 // Get information about a movie by title ---------------------------------------
-app.get('/movies/:Title',
+app.get('/movies/:Title', passport.authenticate('jwt', { session: false }),
     [
         check('Title', 'Invalid movie title - may only contain alphanumeric characters, spaces, hyphens, colons, and ampersands').matches(/^[a-zA-Z0-9\s\-\:\&]+$/)
     ], async (req, res) => {
@@ -108,7 +108,7 @@ app.get('/movies/:Title',
     });
 
 // Get information about a genre by name ---------------------------------------
-app.get('/genre/:Name',
+app.get('/genre/:Name', passport.authenticate('jwt', { session: false }),
     [
         check('Name', 'Invalid genre name, may only contain alpha characters, spaces and hyphens').matches(/^[a-zA-Z0-9\s\-]+$/)
     ], async (req, res) => {
@@ -131,7 +131,7 @@ app.get('/genre/:Name',
     });
 
 // Get information about a director by name -------------------------------------
-app.get('/director/:Name',
+app.get('/director/:Name', passport.authenticate('jwt', { session: false }),
     [
         check('Name', 'Invalid director name, must be alpha characters, hyphen or apostrophe').matches(/^[a-zA-Z\s\-\']+$/)
     ], async (req, res) => {
@@ -225,10 +225,8 @@ app.post('/users',
         Birthdate: Date
     }
 */
-app.put('/users/:Username',
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
     [
-        passport.authenticate('jwt', { session: false }),
-
         //Validate Password, Email input here
         check('Password', 'Password cannot be empty').not().isEmpty(),
         check('Email', 'Email address is invalid').isEmail()
