@@ -1,4 +1,32 @@
-//File: index.js - API route handlers for the myFlix application
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: index.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: index.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//File: index.js - API route handlers for the myFlix application
 
 const express = require('express');
 const app = express();
@@ -43,7 +71,7 @@ let auth = require('./auth.js')(app);
 const passport = require('passport');
 require('./passport.js');
 
-// Requests & handling -----------------------------------------------------
+// Requests &amp; handling -----------------------------------------------------
 
 app.get('/', (req, res) => {
     res.status(200).send('This will be the homepage for my API!');
@@ -56,7 +84,7 @@ app.get('/', (req, res) => {
  * @example Route: GET /documentation
  */
 function getApiHtmlDoc(req, res) {
-    DEBUG_LOG && console.log('Sending file for /documentation request path: ' + path.join(__dirname, 'public', 'documentation.html'));
+    DEBUG_LOG &amp;&amp; console.log('Sending file for /documentation request path: ' + path.join(__dirname, 'public', 'documentation.html'));
     res.sendFile(path.join(__dirname, 'public', 'documentation.html'));
 }
 
@@ -108,7 +136,7 @@ app.get('/documentation', getApiHtmlDoc);
 async function getAllMovies(req, res) {
 
     try {
-        DEBUG_LOG && console.log("GET: Request for list of all movies...");
+        DEBUG_LOG &amp;&amp; console.log("GET: Request for list of all movies...");
 
         const responseMovies = await Movies.find();
         if (!responseMovies) {
@@ -159,7 +187,7 @@ async function getMovieByTitle(req, res) {
     }
 
     try {
-        DEBUG_LOG && console.log('GET : Searching for info on movie: ' + req.params.Title);
+        DEBUG_LOG &amp;&amp; console.log('GET : Searching for info on movie: ' + req.params.Title);
 
         const movieFound = await Movies.findOne({ Title: req.params.Title });
         let returnMovie = {
@@ -174,7 +202,7 @@ async function getMovieByTitle(req, res) {
             Featured: movieFound?.Featured ?? ''
         };
 
-        DEBUG_LOG && console.log("GET: The returnMovie value is:", returnMovie);
+        DEBUG_LOG &amp;&amp; console.log("GET: The returnMovie value is:", returnMovie);
         return res.status(200).json(returnMovie);
 
     } catch (err) {
@@ -185,7 +213,7 @@ async function getMovieByTitle(req, res) {
 
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }),
     [
-        check('Title', 'Invalid movie title - may only contain alphanumeric characters, spaces, hyphens, colons, and ampersands').matches(/^[a-zA-Z0-9\s\-\:\&]+$/)
+        check('Title', 'Invalid movie title - may only contain alphanumeric characters, spaces, hyphens, colons, and ampersands').matches(/^[a-zA-Z0-9\s\-\:\&amp;]+$/)
     ], getMovieByTitle);
 
 
@@ -212,7 +240,7 @@ async function getGenreByName(req, res) {
     }
 
     try {
-        DEBUG_LOG && console.log('GET: Looking for information about the movie genre ' + req.params.Name);
+        DEBUG_LOG &amp;&amp; console.log('GET: Looking for information about the movie genre ' + req.params.Name);
 
         const genreFoundInMovie = await Movies.findOne({ "Genre.Name": req.params.Name });
         return res.status(200).json(genreFoundInMovie.Genre);
@@ -254,7 +282,7 @@ async function getDirectorByName(req, res) {
     }
 
     try {
-        DEBUG_LOG && console.log('GET: Looking for information about director ' + req.params.Name);
+        DEBUG_LOG &amp;&amp; console.log('GET: Looking for information about director ' + req.params.Name);
 
         const directorFoundInMovie = await Movies.findOne({ "Director.Name": req.params.Name });
         return res.status(200).json(directorFoundInMovie.Director);
@@ -313,8 +341,8 @@ async function registerNewUser(req, res) {
     }
 
     try {
-        DEBUG_LOG && console.log('POST: Trying to register a user: ');
-        DEBUG_LOG && console.log(JSON.stringify(req.body));
+        DEBUG_LOG &amp;&amp; console.log('POST: Trying to register a user: ');
+        DEBUG_LOG &amp;&amp; console.log(JSON.stringify(req.body));
 
         const user = await Users.findOne({ Username: req.body.Username });
 
@@ -331,7 +359,7 @@ async function registerNewUser(req, res) {
                 Birthdate: dateValue
             });
 
-            DEBUG_LOG && console.log("POST: Created new user: ", newUser);
+            DEBUG_LOG &amp;&amp; console.log("POST: Created new user: ", newUser);
             res.status(201).json(newUser);
         }
 
@@ -354,7 +382,7 @@ app.post('/users',
 
 
 /**
- * Sends HTTP PUT request to update user's account info (Password, Email & Birthdate).
+ * Sends HTTP PUT request to update user's account info (Password, Email &amp; Birthdate).
  * @function updateUserInfo
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
@@ -400,7 +428,7 @@ async function updateUserInfo(req, res) {
     }
 
     //If all checks passed, then update account info
-    DEBUG_LOG && console.log("PUT: Trying to update account information for " + req.user.Username + ": " + JSON.stringify(req.body));
+    DEBUG_LOG &amp;&amp; console.log("PUT: Trying to update account information for " + req.user.Username + ": " + JSON.stringify(req.body));
 
     let hashedPassword = Users.hashPassword(req.body.Password); // fn() hashPassword defined in models.js
 
@@ -465,7 +493,7 @@ async function addFavMovie(req, res) {
         return; //Response sent back to client by checkValidationResults
     }
 
-    DEBUG_LOG && console.log('POST: Verifying MovieID ' + req.params.MovieID + ' is in the database');
+    DEBUG_LOG &amp;&amp; console.log('POST: Verifying MovieID ' + req.params.MovieID + ' is in the database');
 
     // Verify MovieID is in the database
     try {
@@ -478,7 +506,7 @@ async function addFavMovie(req, res) {
         return res.status(500).send('POST failed: Error checking database for movieID ' + req.params.movieID + ': ' + err);
     }
 
-    DEBUG_LOG && console.log('POST: Trying to add movie ' + req.params.MovieID + ' to favorites list for account: ' + req.user.Username);
+    DEBUG_LOG &amp;&amp; console.log('POST: Trying to add movie ' + req.params.MovieID + ' to favorites list for account: ' + req.user.Username);
 
     try {
         const updatedUser = await Users.findOneAndUpdate(
@@ -534,7 +562,7 @@ async function deleteFavMovie(req, res) {
 
     // No need to verify if MovieID is in the database, only need to check favorite list elements
 
-    DEBUG_LOG && console.log('DELETE: Trying to delete movie ' + req.params.MovieID + ' from favorites list for account ' + req.user.Username);
+    DEBUG_LOG &amp;&amp; console.log('DELETE: Trying to delete movie ' + req.params.MovieID + ' from favorites list for account ' + req.user.Username);
 
     try {
         const updatedUser = await Users.findOneAndUpdate(
@@ -566,12 +594,12 @@ app.delete('/movies/favorites/:MovieID', passport.authenticate('jwt', { session:
  * @example Route: DELETE /users
  * @example Responses:
  *  - Success: "DELETE successful : Account Test123 has been removed."
- *  - Failure: "DELETE failed - Could not remove account Test123 due to server error: <error>"
+ *  - Failure: "DELETE failed - Could not remove account Test123 due to server error: &lt;error>"
  *  - Not Found: "DELETE failed - User Test123 could not be found."
  */
 async function deleteUser(req, res) {
 
-    DEBUG_LOG && console.log("Trying to deregister user account : " + req.user.Username);
+    DEBUG_LOG &amp;&amp; console.log("Trying to deregister user account : " + req.user.Username);
 
     try {
         const deletedUser = await Users.findOneAndDelete({ Username: req.user.Username, Password: req.user.Password });
@@ -603,4 +631,26 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
     console.log('\n[][][] myFlix(Matinee) Movie API server is up and listening on port ' + port + '... [][][]\n');
-});
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addFavMovie">addFavMovie</a></li><li><a href="global.html#checkValidationResults">checkValidationResults</a></li><li><a href="global.html#deleteFavMovie">deleteFavMovie</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#getAllMovies">getAllMovies</a></li><li><a href="global.html#getApiHtmlDoc">getApiHtmlDoc</a></li><li><a href="global.html#getDirectorByName">getDirectorByName</a></li><li><a href="global.html#getGenreByName">getGenreByName</a></li><li><a href="global.html#getMovieByTitle">getMovieByTitle</a></li><li><a href="global.html#loginUser">loginUser</a></li><li><a href="global.html#registerNewUser">registerNewUser</a></li><li><a href="global.html#updateUserInfo">updateUserInfo</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 21 2025 19:59:07 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

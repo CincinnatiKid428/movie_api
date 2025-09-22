@@ -1,0 +1,18 @@
+{
+  "source": {
+    "include": [
+      "index.js",
+      "auth.js",
+      "util.js"
+    ],
+    "exclude": [
+      "node_modules",
+      "passport.js",
+      "models.js"
+    ]
+  },
+  "opts": {
+    "destination": "docs",
+    "recurse": false
+  }
+}

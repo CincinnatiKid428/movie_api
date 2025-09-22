@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="src/css/styles.css">
     <title>API Documentation</title>
 </head>
+
 <body>
     <h1>Movie API Documentation</h1>
     <hr>
@@ -38,7 +40,7 @@
     <hr>
     <h2>API Endpoints Format Example:</h2>
 
-<!--------------------------Example API format-------------------------->
+    <!--------------------------Example API format-------------------------->
     <br>
     <div class="container" id="example">
         <div class="heading-block">HTTP METHOD</div>
@@ -58,11 +60,11 @@
         <div class="description-block">Description of the request body:</div>
         <div class="description-block code-font">
             {
-                <blockquote>
-                    "Field1" : "Value1",<br>
-                    "Field2" : "Value2",<br>
-                    ...
-                </blockquote>
+            <blockquote>
+                "Field1" : "Value1",<br>
+                "Field2" : "Value2",<br>
+                ...
+            </blockquote>
             }
         </div>
 
@@ -71,11 +73,11 @@
         <div class="description-block">Description of the response body:</div>
         <div class="description-block code-font">
             {
-                <blockquote>
-                    "Field1" : "Value1",<br>
-                    "Field2" : "Value2",<br>
-                    ...
-                </blockquote>
+            <blockquote>
+                "Field1" : "Value1",<br>
+                "Field2" : "Value2",<br>
+                ...
+            </blockquote>
             }
         </div>
         <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
@@ -89,7 +91,8 @@
     <div class="container" id="register">
         <div class="heading-block">HTTP POST</div>
         <div class="subheading-block">/users</div>
-        <div class="description-block">Registers a new user account with their desired username (if available), password, email and birthdate (optional).</div>
+        <div class="description-block">Registers a new user account with their desired username (if available),
+            password, email and birthdate (optional).</div>
 
         <div class="heading-block">Request Parameters</div>
         <div class="req-params-block">None</div>
@@ -99,26 +102,28 @@
         <div class="description-block">JSON object holding the desired information to register a new account:</div>
         <div class="description-block code-font">
             {<br>
-                <blockquote>"Username" : "Saffron",<br>
-                    "Password" : "meow1234!",<br>
-                    "Email" : "risotto@email.com",<br>
-                    "Birthdate" : "2022/10/31" <span style="font-family:Arial, Helvetica, sans-serif;color:#000;">(optional)</span>
-                </blockquote>
+            <blockquote>"Username" : "Saffron",<br>
+                "Password" : "meow1234!",<br>
+                "Email" : "risotto@email.com",<br>
+                "Birthdate" : "2022/10/31" <span
+                    style="font-family:Arial, Helvetica, sans-serif;color:#000;">(optional)</span>
+            </blockquote>
             }
         </div>
 
         <div class="heading-block">Response Body Format</div>
         <div class="subheading-block">JSON/Text</div>
-        <div class="description-block">JSON object holding the new account information or error message if creation failed:</div>
+        <div class="description-block">JSON object holding the new account information or error message if creation
+            failed:</div>
         <div class="description-block code-font">
             {
-                <blockquote>"_id": "672646c255a517151e82293c",<br>
-                    "Username" : "Saffron",<br>
-                    "Password" : "(Hashed Password)",<br>
-                    "Email" : "risotto@email.com",<br>
-                    "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
-                    "FavoriteMovies" : []
-                </blockquote>
+            <blockquote>"_id": "672646c255a517151e82293c",<br>
+                "Username" : "Saffron",<br>
+                "Password" : "(Hashed Password)",<br>
+                "Email" : "risotto@email.com",<br>
+                "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
+                "FavoriteMovies" : []
+            </blockquote>
             }
         </div>
         <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
@@ -136,63 +141,68 @@
 
         <div class="heading-block">Request Body Format</div>
         <div class="subheading-block">JSON</div>
-        <div class="description-block">JSON object with <span class="code-font">Username</span> and <span class="code-font">Password</span> fields:</div>
+        <div class="description-block">JSON object with <span class="code-font">Username</span> and <span
+                class="code-font">Password</span> fields:</div>
         <div class="description-block code-font">
             {
-                <blockquote>"Username" : "Saffron" , "Password" : "meow1234!"</blockquote>
+            <blockquote>"Username" : "Saffron" , "Password" : "meow1234!"</blockquote>
             }
         </div>
 
         <div class="heading-block">Response Body Format</div>
         <div class="subheading-block">JSON/Text</div>
-        <div class="description-block">A JSON response containing the User document as well as JWT token for authentication or text error message:</div>
+        <div class="description-block">A JSON response containing the User document as well as JWT token for
+            authentication or text error message:</div>
         <div class="description-block code-font">
             {<br>
-                "user":{
-                <blockquote>"_id": "672646c255a517151e82293c",<br>
-                    "Username" : "Saffron",<br>
-                    "Password" : "(Hashed Password)",<br>
-                    "Email" : "risotto@email.com",<br>
-                    "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
-                    "FavoriteMovies" : [],<br>
-                    "__v": 0
-                </blockquote>
-                },<br>
-                "token": "s25df6S6dfA6S4dFa788sD9G9A9Sg5a5wGuHW..."<br>
+            "user":{
+            <blockquote>"_id": "672646c255a517151e82293c",<br>
+                "Username" : "Saffron",<br>
+                "Password" : "(Hashed Password)",<br>
+                "Email" : "risotto@email.com",<br>
+                "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
+                "FavoriteMovies" : [],<br>
+                "__v": 0
+            </blockquote>
+            },<br>
+            "token": "s25df6S6dfA6S4dFa788sD9G9A9Sg5a5wGuHW..."<br>
             }
         </div>
         <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
     </div>
 
-<!--------------------------Update account information-------------------------->
-<br><br>
-<div class="container" id="update">
-    <div class="heading-block">HTTP PUT</div>
-    <div class="subheading-block">/users/[Username]</div>
-    <div class="description-block">Updates an exisiting user's account information.</div>
+    <!--------------------------Update account information-------------------------->
+    <br><br>
+    <div class="container" id="update">
+        <div class="heading-block">HTTP PUT</div>
+        <div class="subheading-block">/users/[Username]</div>
+        <div class="description-block">Updates an exisiting user's account information.</div>
 
-    <div class="heading-block">Request Parameters</div>
-    <div class="req-params-block">
-        <span class="req-param-list-item">Username</span> : The account with <span class="code-font">Username</span> to receive the update.
-    </div>
+        <div class="heading-block">Request Parameters</div>
+        <div class="req-params-block">
+            <span class="req-param-list-item">Username</span> : The account with <span class="code-font">Username</span>
+            to receive the update.
+        </div>
 
-    <div class="heading-block">Request Body Format</div>
-    <div class="subheading-block">JSON</div>
-    <div class="description-block">A JSON object with account information to be updated--<u>ALL</u> information is required and will overwrite current account info:</div>
-    <div class="description-block code-font">
-        {
+        <div class="heading-block">Request Body Format</div>
+        <div class="subheading-block">JSON</div>
+        <div class="description-block">A JSON object with account information to be updated--<u>ALL</u> information is
+            required and will overwrite current account info:</div>
+        <div class="description-block code-font">
+            {
             <blockquote>"Password" : "abc555!",<br>
                 "Email" : "fred09@email.com",<br>
                 "Birthdate" : "1978/05/26"
             </blockquote>
             }
-    </div>
+        </div>
 
-    <div class="heading-block">Response Body Format</div>
-    <div class="subheading-block">JSON/Text</div>
-    <div class="description-block">JSON object holding the updated account information or message of failure to update:</div>
-    <div class="description-block code-font">
-        {
+        <div class="heading-block">Response Body Format</div>
+        <div class="subheading-block">JSON/Text</div>
+        <div class="description-block">JSON object holding the updated account information or message of failure to
+            update:</div>
+        <div class="description-block code-font">
+            {
             <blockquote>"_id": "672646c255a517151e82293c",<br>
                 "Username" : "Fred09",<br>
                 "Password" : "(Hashed Password)",<br>
@@ -200,93 +210,102 @@
                 "Birthdate" : "ISODate('1978-05-26T04:00:00.000Z')",<br>
                 "FavoriteMovies" : []
             </blockquote>
-        }
+            }
+        </div>
+        <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
     </div>
-    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
-</div>
 
-<!--------------------------Get listing of all movies-------------------------->
-<br><br>
-<div class="container" id="getAllMovies">
-    <div class="heading-block">HTTP GET</div>
-    <div class="subheading-block">/movies</div>
-    <div class="description-block">Returns a list of ALL movie data, including embedded documents.</div>
+    <!--------------------------Get listing of all movies-------------------------->
+    <br><br>
+    <div class="container" id="getAllMovies">
+        <div class="heading-block">HTTP GET</div>
+        <div class="subheading-block">/movies</div>
+        <div class="description-block">Returns a list of ALL movie data, including embedded documents.</div>
 
-    <div class="heading-block">Request Parameters</div>
-    <div class="req-params-block">None</div>
+        <div class="heading-block">Request Parameters</div>
+        <div class="req-params-block">None</div>
 
-    <div class="heading-block">Request Body Format</div>
-    <div class="subheading-block">N/A</div>
-    <div class="description-block">No request body.</div>
+        <div class="heading-block">Request Body Format</div>
+        <div class="subheading-block">N/A</div>
+        <div class="description-block">No request body.</div>
 
-    <div class="heading-block">Response Body Format</div>
-    <div class="subheading-block">JSON/Text</div>
-    <div class="description-block">JSON format response containing movie data for each movie (data example for one movie seen below) or failure message retreiving list:</div>
-    <div class="description-block code-font">
-        {<blockquote>
-            "Genre" {
+        <div class="heading-block">Response Body Format</div>
+        <div class="subheading-block">JSON/Text</div>
+        <div class="description-block">JSON format response containing movie data for each movie (data example for one
+            movie seen below) or failure message retreiving list:</div>
+        <div class="description-block code-font">
+            {<blockquote>
+                "Genre" {
                 <blockquote>
-                "Name" : "Horror",<br>
-                "Description" : "The horror genre features stories that aim to elicit fear, suspense, and a sense of dread in its audience. Horror stories often explore themes related to the unknown, the supernatural, and the macabre, and they frequently evoke strong emotional reactions such as anxiety, terror, and unease."
+                    "Name" : "Horror",<br>
+                    "Description" : "The horror genre features stories that aim to elicit fear, suspense, and a sense of
+                    dread in its audience. Horror stories often explore themes related to the unknown, the supernatural,
+                    and the macabre, and they frequently evoke strong emotional reactions such as anxiety, terror, and
+                    unease."
                 </blockquote>
-            },<br>
-            "Director": {
+                },<br>
+                "Director": {
                 <blockquote>
-                "Name": "John Carpenter",<br>
-                "Bio": "This is the biography of John Carpenter...",<br>
-                "BirthYear": "1948",<br>
-                "DeathYear": null,<br>
-                "Movies": [
+                    "Name": "John Carpenter",<br>
+                    "Bio": "This is the biography of John Carpenter...",<br>
+                    "BirthYear": "1948",<br>
+                    "DeathYear": null,<br>
+                    "Movies": [
                     <blockquote>
-                    "Halloween",<br>
-                    "The Fog",<br>
-                    "The Thing",<br>
-                    "Escape from New York"
+                        "Halloween",<br>
+                        "The Fog",<br>
+                        "The Thing",<br>
+                        "Escape from New York"
                     </blockquote>
-                ]
+                    ]
                 </blockquote>
-            },<br>
-            "_id": "671eb218577ed8cab386b01f",<br>
-            "Title": "Halloween",<br>
-            "ReleaseYear": "1978",<br>
-            "Rating": "7.7",<br>
-            "Description": "Fifteen years after murdering his sister on Halloween night 1963, Michael Myers escapes from a mental hospital and returns to the small town of Haddonfield, Illinois, to kill again.",<br>
-            "Actors": [
+                },<br>
+                "_id": "671eb218577ed8cab386b01f",<br>
+                "Title": "Halloween",<br>
+                "ReleaseYear": "1978",<br>
+                "Rating": "7.7",<br>
+                "Description": "Fifteen years after murdering his sister on Halloween night 1963, Michael Myers escapes
+                from a mental hospital and returns to the small town of Haddonfield, Illinois, to kill again.",<br>
+                "Actors": [
                 <blockquote>
-                "Donald Pleasence",<br>
-                "Jamie Lee Curtis",<br>
-                "Tony Moran"
+                    "Donald Pleasence",<br>
+                    "Jamie Lee Curtis",<br>
+                    "Tony Moran"
                 </blockquote>
-            ],<br>
-            "ImageURL": "https://www.imageURL.com/movie-image.jpg",<br>
-            "Featured": true
+                ],<br>
+                "ImageURL": "https://www.imageURL.com/movie-image.jpg",<br>
+                "Featured": true
             </blockquote>
-        }
-    </div>
-    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
-</div>
-
-<!--------------------------Get info on movie by Title-------------------------->
-<br><br>
-<div class="container" id="getOneMovie">
-    <div class="heading-block">HTTP GET</div>
-    <div class="subheading-block">/movies/[Title]</div>
-    <div class="description-block">Returns the following data about a movie title: release year, rating, description, director, genre, actors, image URL and whether it is featured (does not include embedded documents).</div>
-
-    <div class="heading-block">Request Parameters</div>
-    <div class="req-params-block">
-        <span class="req-param-list-item">Title</span> : The <span class="code-font">Title</span> field of the movie the user is looking for information about.
+            }
+        </div>
+        <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
     </div>
 
-    <div class="heading-block">Request Body Format</div>
-    <div class="subheading-block">N/A</div>
-    <div class="description-block">No request body.</div>
+    <!--------------------------Get info on movie by Title-------------------------->
+    <br><br>
+    <div class="container" id="getOneMovie">
+        <div class="heading-block">HTTP GET</div>
+        <div class="subheading-block">/movies/[Title]</div>
+        <div class="description-block">Returns the following data about a movie title: release year, rating,
+            description, director, genre, actors, image URL and whether it is featured (does not include embedded
+            documents).</div>
 
-    <div class="heading-block">Response Body Format</div>
-    <div class="subheading-block">JSON/Text</div>
-    <div class="description-block">JSON format response containing information about a single movie or failure message:</div>
-    <div class="description-block code-font">
-        {
+        <div class="heading-block">Request Parameters</div>
+        <div class="req-params-block">
+            <span class="req-param-list-item">Title</span> : The <span class="code-font">Title</span> field of the movie
+            the user is looking for information about.
+        </div>
+
+        <div class="heading-block">Request Body Format</div>
+        <div class="subheading-block">N/A</div>
+        <div class="description-block">No request body.</div>
+
+        <div class="heading-block">Response Body Format</div>
+        <div class="subheading-block">JSON/Text</div>
+        <div class="description-block">JSON format response containing information about a single movie or failure
+            message:</div>
+        <div class="description-block code-font">
+            {
             <blockquote>
                 "Title" : "Stand by Me",<br>
                 "ReleaseYear : "1986",<br>
@@ -299,61 +318,64 @@
                 "Featured" : "true"
             </blockquote>
             }
-    </div>
-    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
-</div>
-
-<!--------------------------Get info about genre by Name-------------------------->
-<br><br>
-<div class="container" id="getGenre">
-    <div class="heading-block">HTTP GET</div>
-    <div class="subheading-block">/genre/[Name]</div>
-    <div class="description-block">Returns data about a genre (description) by name (e.g., "Thriller").</div>
-
-    <div class="heading-block">Request Parameters</div>
-    <div class="req-params-block">
-        <span class="req-param-list-item">Name</span> : The <span class="code-font">Name</span> field of the genre the user is looking for information about.
+        </div>
+        <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
     </div>
 
-    <div class="heading-block">Request Body Format</div>
-    <div class="subheading-block">N/A</div>
-    <div class="description-block">No request body.</div>
+    <!--------------------------Get info about genre by Name-------------------------->
+    <br><br>
+    <div class="container" id="getGenre">
+        <div class="heading-block">HTTP GET</div>
+        <div class="subheading-block">/genre/[Name]</div>
+        <div class="description-block">Returns data about a genre (description) by name (e.g., "Thriller").</div>
 
-    <div class="heading-block">Response Body Format</div>
-    <div class="subheading-block">JSON/Text</div>
-    <div class="description-block">JSON format response containing the description of the genre or failure message:</div>
-    <div class="description-block code-font">
-        {
+        <div class="heading-block">Request Parameters</div>
+        <div class="req-params-block">
+            <span class="req-param-list-item">Name</span> : The <span class="code-font">Name</span> field of the genre
+            the user is looking for information about.
+        </div>
+
+        <div class="heading-block">Request Body Format</div>
+        <div class="subheading-block">N/A</div>
+        <div class="description-block">No request body.</div>
+
+        <div class="heading-block">Response Body Format</div>
+        <div class="subheading-block">JSON/Text</div>
+        <div class="description-block">JSON format response containing the description of the genre or failure message:
+        </div>
+        <div class="description-block code-font">
+            {
             <blockquote>
                 "Name" : "Drama",<br>
                 "Description" : "The drama genre is characterized by..."
             </blockquote>
-        }
-    </div>
-    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
-</div>
-
-<!--------------------------Get info about director by Name-------------------------->
-<br><br>
-<div class="container" id="getDirector">
-    <div class="heading-block">HTTP GET</div>
-    <div class="subheading-block">/director/[Name]</div>
-    <div class="description-block">Returns data about a director (bio, birth/death year, movies) by name.</div>
-
-    <div class="heading-block">Request Parameters</div>
-    <div class="req-params-block">
-        <span class="req-param-list-item">Name</span> : The <span class="code-font">Name</span> field of the director the user is looking for information about.
+            }
+        </div>
+        <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
     </div>
 
-    <div class="heading-block">Request Body Format</div>
-    <div class="subheading-block">N/A</div>
-    <div class="description-block">No request body.</div>
+    <!--------------------------Get info about director by Name-------------------------->
+    <br><br>
+    <div class="container" id="getDirector">
+        <div class="heading-block">HTTP GET</div>
+        <div class="subheading-block">/director/[Name]</div>
+        <div class="description-block">Returns data about a director (bio, birth/death year, movies) by name.</div>
 
-    <div class="heading-block">Response Body Format</div>
-    <div class="subheading-block">JSON/Text</div>
-    <div class="description-block">JSON format object holding data about the director or failure message:</div>
-    <div class="description-block code-font">
-        {
+        <div class="heading-block">Request Parameters</div>
+        <div class="req-params-block">
+            <span class="req-param-list-item">Name</span> : The <span class="code-font">Name</span> field of the
+            director the user is looking for information about.
+        </div>
+
+        <div class="heading-block">Request Body Format</div>
+        <div class="subheading-block">N/A</div>
+        <div class="description-block">No request body.</div>
+
+        <div class="heading-block">Response Body Format</div>
+        <div class="subheading-block">JSON/Text</div>
+        <div class="description-block">JSON format object holding data about the director or failure message:</div>
+        <div class="description-block code-font">
+            {
             <blockquote>
                 "Name" : "Rob Reiner",<br>
                 "Bio" : "A short biography."<br>
@@ -361,32 +383,33 @@
                 "DeathYear" : "",<br>
                 "Movies" : ["Stand by Me", "When Harry Met Sally", "Misery", "A Few Good Men"]
             </blockquote>
-        }
-    </div>
-    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
-</div>
-
-<!--------------------------Add a movie to favorites list-------------------------->
-<br><br>
-<div class="container" id="addFav">
-    <div class="heading-block">HTTP POST</div>
-    <div class="subheading-block">/movies/favorites/[MovieID]</div>
-    <div class="description-block">Adds a movie by MovieID to a user's favorites list.</div>
-
-    <div class="heading-block">Request Parameters</div>
-    <div class="req-params-block">
-        <span class="req-param-list-item">MovieID</span> : The <span class="code-font">_id</span> field of the movie to be added to the user's list.
+            }
+        </div>
+        <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
     </div>
 
-    <div class="heading-block">Request Body Format</div>
-    <div class="subheading-block">N/A</div>
-    <div class="description-block">No request body.</div>
+    <!--------------------------Add a movie to favorites list-------------------------->
+    <br><br>
+    <div class="container" id="addFav">
+        <div class="heading-block">HTTP POST</div>
+        <div class="subheading-block">/movies/favorites/[MovieID]</div>
+        <div class="description-block">Adds a movie by MovieID to a user's favorites list.</div>
 
-    <div class="heading-block">Response Body Format</div>
-    <div class="subheading-block">JSON/Text</div>
-    <div class="description-block">JSON response with updated User favorite movies or error due to failure:</div>
-    <div class="description-block code-font">
-        {
+        <div class="heading-block">Request Parameters</div>
+        <div class="req-params-block">
+            <span class="req-param-list-item">MovieID</span> : The <span class="code-font">_id</span> field of the movie
+            to be added to the user's list.
+        </div>
+
+        <div class="heading-block">Request Body Format</div>
+        <div class="subheading-block">N/A</div>
+        <div class="description-block">No request body.</div>
+
+        <div class="heading-block">Response Body Format</div>
+        <div class="subheading-block">JSON/Text</div>
+        <div class="description-block">JSON response with updated User favorite movies or error due to failure:</div>
+        <div class="description-block code-font">
+            {
             <blockquote>"_id": "672646c255a517151e82293c",<br>
                 "Username" : "Saffron",<br>
                 "Password" : "(Hashed Password)",<br>
@@ -394,32 +417,33 @@
                 "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
                 "FavoriteMovies" : ["671ebe39577ed8cab386b022"]
             </blockquote>
-        }
-    </div>
-    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
-</div>
-
-<!--------------------------Remove a movie from favorites list-------------------------->
-<br><br>
-<div class="container" id="removeFav">
-    <div class="heading-block">HTTP DELETE</div>
-    <div class="subheading-block">/movies/favorites/[MovieID]</div>
-    <div class="description-block">Removes a movie by MovieID from a user's favorites list.</div>
-
-    <div class="heading-block">Request Parameters</div>
-    <div class="req-params-block">
-        <span class="req-param-list-item">MovieID</span> : The <span class="code-font">_id</span> field of the movie to be removed from the user's list.
+            }
+        </div>
+        <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
     </div>
 
-    <div class="heading-block">Request Body Format</div>
-    <div class="subheading-block">N/A</div>
-    <div class="description-block">No request body.</div>
+    <!--------------------------Remove a movie from favorites list-------------------------->
+    <br><br>
+    <div class="container" id="removeFav">
+        <div class="heading-block">HTTP DELETE</div>
+        <div class="subheading-block">/movies/favorites/[MovieID]</div>
+        <div class="description-block">Removes a movie by MovieID from a user's favorites list.</div>
 
-    <div class="heading-block">Response Body Format</div>
-    <div class="subheading-block">JSON/Text</div>
-    <div class="description-block">JSON response with updated User favorite movies or error due to failure:</div>
-    <div class="description-block code-font">
-        {
+        <div class="heading-block">Request Parameters</div>
+        <div class="req-params-block">
+            <span class="req-param-list-item">MovieID</span> : The <span class="code-font">_id</span> field of the movie
+            to be removed from the user's list.
+        </div>
+
+        <div class="heading-block">Request Body Format</div>
+        <div class="subheading-block">N/A</div>
+        <div class="description-block">No request body.</div>
+
+        <div class="heading-block">Response Body Format</div>
+        <div class="subheading-block">JSON/Text</div>
+        <div class="description-block">JSON response with updated User favorite movies or error due to failure:</div>
+        <div class="description-block code-font">
+            {
             <blockquote>
                 "_id": "672646c255a517151e82293c",<br>
                 "Username" : "Saffron",<br>
@@ -428,36 +452,32 @@
                 "Birthdate" : "ISODate('2022-10-31T04:00:00.000Z')",<br>
                 "FavoriteMovies" : []
             </blockquote>
-        }
-    </div>
-    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
-</div>
-
-<!--------------------------Deregister user account-------------------------->
-<br><br>
-<div class="container" id="deregister">
-    <div class="heading-block">HTTP DELETE</div>
-    <div class="subheading-block">/users</div>
-    <div class="description-block">Deregisters a user account.</div>
-
-    <div class="heading-block">Request Parameters</div>
-    <div class="req-params-block">None</div>
-
-    <div class="heading-block">Request Body Format</div>
-    <div class="subheading-block">JSON</div>
-    <div class="description-block">JSON object with account <span class="code-font">Username</span> field to be removed:</div>
-    <div class="description-block code-font">
-        {
-            <blockquote>"Username" : "Saffron"</blockquote>
-        }
+            }
+        </div>
+        <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
     </div>
 
-    <div class="heading-block">Response Body Format</div>
-    <div class="subheading-block">Text</div>
-    <div class="description-block">A text response confirming success/failure of deregister operation.</div>
-    <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
-</div>
+    <!--------------------------Deregister user account-------------------------->
+    <br><br>
+    <div class="container" id="deregister">
+        <div class="heading-block">HTTP DELETE</div>
+        <div class="subheading-block">/users</div>
+        <div class="description-block">Deregisters a user account.</div>
 
-<!-- End of the new API html document format ----------------------------------------------------->
+        <div class="heading-block">Request Parameters</div>
+        <div class="req-params-block">None</div>
+
+        <div class="heading-block">Request Body Format</div>
+        <div class="subheading-block">N/A</div>
+        <div class="description-block">No request body.</div>
+
+        <div class="heading-block">Response Body Format</div>
+        <div class="subheading-block">Text</div>
+        <div class="description-block">A text response confirming success/failure of deregister operation.</div>
+        <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
+    </div>
+
+    <!-- End of the new API html document format ----------------------------------------------------->
 </body>
+
 </html>
