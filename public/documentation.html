@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <h1>Movie API Documentation</h1>
+    <h1>movie_api Project Documentation</h1>
     <hr>
     <h2>Objective</h2>
     <p>
@@ -473,7 +473,17 @@
 
         <div class="heading-block">Response Body Format</div>
         <div class="subheading-block">Text</div>
-        <div class="description-block">A text response confirming success/failure of deregister operation.</div>
+        <div class="description-block">A text response confirming success/failure of deregister operation.<br><br>
+            <blockquote class="code-font">
+                Responses:
+                <ul>
+                    <li>Success: "DELETE successful : Account Test123 has been removed."</li>
+                    <li>Failure: "DELETE failed - Could not remove account Test123 due to server error: This is an error
+                        message..."</li>
+                    <li>Not Found: "DELETE failed - User Test123 could not be found."</li>
+                </ul>
+            </blockquote>
+        </div>
         <p><a href="#toc"><b>Back to Table of Contents</b></a></p>
     </div>
 
