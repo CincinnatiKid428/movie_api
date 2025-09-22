@@ -602,5 +602,5 @@ app.use((err, req, res, next) => {
 
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
-    console.log('\n[][][] myFlix(Matinee) Movie API server is up and listening on port ' + port + '... [][][]\n');
+    console.log('\n][][][][myFlix(Matinee) Movie API server is up and listening on port ' + port + '][][][][\n');
 });
